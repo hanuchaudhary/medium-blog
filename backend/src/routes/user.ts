@@ -3,19 +3,28 @@ import { PrismaClient } from '@prisma/client/edge'
 import { withAccelerate } from '@prisma/extension-accelerate'
 import { sign } from 'hono/jwt';
 import bcrypt from 'bcryptjs';
+import { signupInput, signinInput } from '@hanuchaudhary/medium-app'
 
 export const userRouter = new Hono<{
-    Bindings : {
-        DATABASE_URL : string,
-        JWT_SECRET : string
+    Bindings: {
+        DATABASE_URL: string,
+        JWT_SECRET: string
     }
 }>();
 
 userRouter.post('/signup', async (c) => {
-    const body = await c.req.json();
     const prisma = new PrismaClient({
         datasourceUrl: c.env.DATABASE_URL,
     }).$extends(withAccelerate());
+
+    const body = await c.req.json();
+    //jwt validation
+    const { success } = signupInput.safeParse(body);
+    if (!success) {
+        c.status(400);
+        return c.json({ error: "invalid input" });
+    }
+
 
     try {
         const hashedPassword = await bcrypt.hash(body.password, 10);
@@ -49,6 +58,12 @@ userRouter.post("/signin", async (c) => {
     }).$extends(withAccelerate())
 
     const body = await c.req.json();
+    const { success } = signinInput.safeParse(body);
+    if (!success) {
+        c.status(400);
+        return c.json({ error: "invalid input" });
+    }
+
     const user = await prisma.user.findUnique({
         where: {
             email: body.email
