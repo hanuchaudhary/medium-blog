@@ -7,7 +7,7 @@ CREATE TABLE "User" (
 );
 
 -- CreateTable
-CREATE TABLE "Post" (
+CREATE TABLE "Blog" (
     "id" TEXT NOT NULL,
     "title" TEXT NOT NULL,
     "content" TEXT NOT NULL,
@@ -22,7 +22,7 @@ CREATE UNIQUE INDEX "User_id_key" ON "User"("id");
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Post_id_key" ON "Post"("id");
+CREATE UNIQUE INDEX "Blog_id_key" ON "Blog"("id");
 
 -- AddForeignKey
-ALTER TABLE "Post" ADD CONSTRAINT "Post_authorId_fkey" FOREIGN KEY ("authorId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Blog" ADD CONSTRAINT "Blog_authorId_fkey" FOREIGN KEY ("authorId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
