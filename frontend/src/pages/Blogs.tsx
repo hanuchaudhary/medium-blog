@@ -1,15 +1,17 @@
 import BlogComponents from "../components/BlogComponents";
-import Nabar from "../components/Nabar";
-import { useBlogs } from "../Hooks/Bulk";
+import Nabar from "../components/Navbar";
+import { useFetchBlogs } from "../Hooks/Bulk";
 
 export const Blogs = () => {
-  const { data, loading } = useBlogs();
+  const { data, loading } = useFetchBlogs();
 
-  if(loading){
-    return <div>
-        <Nabar/>
+  if (loading) {
+    return (
+      <div>
+        <Nabar />
         loading....
-    </div>
+      </div>
+    );
   }
   return (
     <div>
@@ -17,6 +19,7 @@ export const Blogs = () => {
       <div className="mx-52">
         {data.map((item, idx) => (
           <BlogComponents
+            to={`/blog/${item.id}`}
             key={idx}
             title={item.title}
             content={item.content}

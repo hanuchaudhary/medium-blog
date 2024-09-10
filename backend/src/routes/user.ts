@@ -19,10 +19,13 @@ userRouter.post('/signup', async (c) => {
 
     const body = await c.req.json();
     //jwt validation
-    const { success } = signupInput.safeParse(body);
+    const { success, error } = signupInput.safeParse(body);
     if (!success) {
         c.status(400);
-        return c.json({ error: "invalid input" });
+        return c.json({
+            message: "Zod Validation error!!!",
+            error: error
+        });
     }
 
 
@@ -58,10 +61,10 @@ userRouter.post("/signin", async (c) => {
     }).$extends(withAccelerate())
 
     const body = await c.req.json();
-    const { success } = signinInput.safeParse(body);
+    const { success, error } = signinInput.safeParse(body);
     if (!success) {
         c.status(400);
-        return c.json({ error: "invalid input" });
+        return c.json({ message: "invalid input", error: error });
     }
 
     const user = await prisma.user.findUnique({
@@ -84,6 +87,6 @@ userRouter.post("/signin", async (c) => {
 
     const token = await sign({ id: user.id, email: user.email }, c.env.JWT_SECRET);
 
-    return c.json({ token });
+    return c.json({ token: token, email: user.email });
 });
 

@@ -1,4 +1,4 @@
-const Nabar = () => {
+const Navbar = () => {
   return (
     <div>
       <nav className="flex items-center justify-between font-mono bg-white py-3 px-8 border-b">
@@ -28,4 +28,4 @@ const Nabar = () => {
   );
 };
 
-export default Nabar;
+export default Navbar;
