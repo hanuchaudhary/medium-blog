@@ -1,5 +1,5 @@
 // SignUpForm.tsx
-import { ChangeEvent, useState } from "react";
+import { useState } from "react";
 import Input from "../components/Input";
 import Button from "../components/Button";
 import AuthBottom from "../components/AuthBottom";
@@ -16,24 +16,19 @@ const SignUpForm = () => {
     password: "",
   });
 
-  const handleOnChange = (e : ChangeEvent<HTMLInputElement>) => {
-    const { name , value } = e.target;
-    setSigninInputs({...signinInputs , [name] : value})
-  };
-
-
   const handleSubmit = async () => {
-    try{
-      const response = await axios.post(`${BACKEND_URL}/api/v1/user/signin`,signinInputs);
+    try {
+      const response = await axios.post(
+        `${BACKEND_URL}/api/v1/user/signin`,
+        signinInputs
+      );
       const jwtToken = response.data.token;
-      localStorage.setItem("token",jwtToken);
-      navigate("/blogs")
-    }
-    catch(error){
-      console.log(error);
+      localStorage.setItem("token", jwtToken);
+      navigate("/blogs");
       
+    } catch (error) {
+      console.log(error);
     }
-    // console.log(signinInputs);
   };
 
   return (
@@ -58,7 +53,9 @@ const SignUpForm = () => {
           label="Email"
           type="email"
           value={signinInputs.email}
-          onChange={handleOnChange}
+          onChange={(e) =>
+            setSigninInputs({ ...signinInputs, email: e.target.value })
+          }
           placeholder="john@example.com"
         />
         <Input
@@ -66,7 +63,7 @@ const SignUpForm = () => {
           label="Password"
           type="password"
           value={signinInputs.password}
-          onChange={handleOnChange}
+          onChange={(e) => setSigninInputs({...signinInputs, password : e.target.value})}
           placeholder="Enter your password"
         />
 

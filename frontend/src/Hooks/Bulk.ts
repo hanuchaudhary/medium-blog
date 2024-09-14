@@ -11,7 +11,7 @@ interface Blog {
     }
 }
 
-export const useBlog = ({ id }: { id: string }) => {
+export const useSearchBlog = ({ id }: { id: string }) => {
     const [data, setData] = useState<Blog>();
     const [loading, setLoading] = useState(true);
 
@@ -24,8 +24,10 @@ export const useBlog = ({ id }: { id: string }) => {
                             Authorization: localStorage.getItem("token")
                         }
                     });
+                    console.log(response);
+                    
                 setLoading(false);
-                setData(response.data);
+                setData(response.data.blog);
             } catch (err) {
                 setLoading(true)
                 console.log(err);

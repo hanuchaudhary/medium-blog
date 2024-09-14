@@ -4,6 +4,7 @@ import Button from "../components/Button";
 export default function Component() {
   return (
     <div className="min-h-screen bg-[#f5f5f5] text-[#1a1a1a] font-mono">
+      
       <header className="flex items-center justify-between px-8 py-4 border-b">
         <div className="text-2xl font-bold">Medium</div>
         <nav className="flex items-center gap-6">

@@ -5,6 +5,9 @@ interface fullBlogProps {
     content: string;
     name: string;
     published?: string;
+    author? : {
+      name : string
+    }
   }
 
 const FullBlog = ({title,content,name}:fullBlogProps) => {
@@ -18,7 +21,7 @@ const FullBlog = ({title,content,name}:fullBlogProps) => {
           <div className="">
             <h1 className="font-semibold capitalize">{name}</h1>
             <div className="flex gap-2">
-              <h1>6min read</h1>
+              <h1>{Math.ceil(content.length/60) + " Minutes Read"}</h1>
               <p className="published"></p>
             </div>
           </div>

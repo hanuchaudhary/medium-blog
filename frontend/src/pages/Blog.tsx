@@ -1,17 +1,20 @@
 import FullBlog from "../components/FullBlog";
-import { useBlog } from "../Hooks/Bulk";
+import { useSearchBlog } from "../Hooks/Bulk";
 import Navbar from "../components/Navbar";
 import { useParams } from "react-router-dom";
+import FullBlogLoader from "../components/FullBlogLoader";
 
 const Blog = () => {
   const { id } = useParams();
-  const { data, loading } = useBlog({
+  const { data, loading } = useSearchBlog({
     id: id || "",
   });
 
   if(loading){
     <Navbar/>
-    return <div>loading...</div>
+    return <div className="mx-52 my-10">
+      <FullBlogLoader/>
+    </div>
   }
 
   return (
@@ -19,9 +22,9 @@ const Blog = () => {
       <Navbar />
       <div className="mx-52 my-10">
         <FullBlog
-          name={data?.author.name || "User"}
-          title="There are FIVE levels of UI skill."
-          content="xyx"
+          name={data?.author.name || "Anoymonous"}
+          title={data?.title || "Title"}
+          content={data?.content || "Content"}
         />
       </div>
     </div>

@@ -1,11 +1,11 @@
 // SignUpForm.tsx
-import { ChangeEvent, useState } from "react";
+import { useState } from "react";
 import Input from "../components/Input";
 import Button from "../components/Button";
 import AuthBottom from "../components/AuthBottom";
 import { SignupType } from "@hanuchaudhary/medium-app";
 import AuthTop from "../components/AuthTop";
-import { Link , useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { BACKEND_URL } from "../config";
 
@@ -18,11 +18,6 @@ const SignUpForm = () => {
     name: "",
   });
 
-  const handleOnChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setSignupInputs({ ...signupInputs, [name]: value });
-  };
-
   const handleSubmit = async () => {
     try {
       const response = await axios.post(
@@ -31,7 +26,6 @@ const SignUpForm = () => {
       );
 
       const jwt = response.data.token;
-      console.log(jwt);
       localStorage.setItem("token", jwt);
       navigate("/blogs");
     } catch (error) {
@@ -63,14 +57,18 @@ const SignUpForm = () => {
           type="text"
           value={signupInputs.name}
           placeholder="John Doe"
-          onChange={handleOnChange}
+          onChange={(e) =>
+            setSignupInputs({ ...signupInputs, name: e.target.value })
+          }
         />
         <Input
           name="email"
           label="Email"
           type="email"
           value={signupInputs.email}
-          onChange={handleOnChange}
+          onChange={(e) =>
+            setSignupInputs({ ...signupInputs, email: e.target.value })
+          }
           placeholder="john@example.com"
         />
         <Input
@@ -78,7 +76,9 @@ const SignUpForm = () => {
           label="Password"
           type="password"
           value={signupInputs.password}
-          onChange={handleOnChange}
+          onChange={(e) =>
+            setSignupInputs({ ...signupInputs, password: e.target.value })
+          }
           placeholder="Enter your password"
         />
 

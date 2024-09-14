@@ -1,8 +1,15 @@
-const Navbar = () => {
+import { Link, useLocation } from "react-router-dom";
+
+const Navbar = ({onClick} : any) => {
+  const location = useLocation();
+  const path = location.pathname;
+
   return (
     <div>
       <nav className="flex items-center justify-between font-mono bg-white py-3 px-8 border-b">
-        <div className="text-2xl font-bold text-gray-800">Medium</div>
+        <Link to={"/blogs"} className="text-2xl font-bold text-gray-800">
+          Medium
+        </Link>
         <div className="relative w-1/3">
           <input
             type="text"
@@ -11,9 +18,19 @@ const Navbar = () => {
           />
         </div>
         <div className="flex items-center space-x-4">
-          <button className="py-2 px-4 bg-gray-100 rounded-full hover:bg-gray-200">
-            Write
-          </button>
+          {path === "/publish" ? (
+            <div>
+              <button onClick={onClick} className="py-2 px-4 bg-green-500 rounded-full hover:bg-green-600">
+                Publish
+              </button>
+            </div>
+          ) : (
+            <Link to={"/publish"}>
+              <button className="py-2 px-4 bg-green-100 rounded-full hover:bg-green-200">
+                Write
+              </button>
+            </Link>
+          )}
 
           <button className="p-2 bg-gray-100 rounded-full hover:bg-gray-200">
             🔔
