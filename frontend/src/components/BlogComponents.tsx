@@ -42,7 +42,7 @@ const BlogComponents = ({
           <div className="date">
             <h1>{published}</h1>
           </div>
-          <p>{Math.ceil(content.length / 60) + " Min Read"}</p>
+          <p>{Math.ceil(content.length / 100) + " Min Read"}</p>
         </div>
       </div>
     </Link>

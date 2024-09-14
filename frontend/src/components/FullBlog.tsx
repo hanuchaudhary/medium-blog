@@ -21,7 +21,7 @@ const FullBlog = ({title,content,name}:fullBlogProps) => {
           <div className="">
             <h1 className="font-semibold capitalize">{name}</h1>
             <div className="flex gap-2">
-              <h1>{Math.ceil(content.length/60) + " Minutes Read"}</h1>
+              <h1>{Math.ceil(content.length/100) + " Minutes Read"}</h1>
               <p className="published"></p>
             </div>
           </div>
