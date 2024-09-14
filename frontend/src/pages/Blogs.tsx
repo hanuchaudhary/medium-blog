@@ -1,6 +1,6 @@
 import BlogComponents from "../components/BlogComponents";
 import BlogsLoader from "../components/BlogsLoader";
-import Nabar from "../components/Navbar";
+import Navbar from "../components/Navbar";
 import { useFetchBlogs } from "../Hooks/Bulk";
 
 export const Blogs = () => {
@@ -9,17 +9,17 @@ export const Blogs = () => {
   if (loading) {
     return (
       <div className="w-full my-10">
-        <Nabar />
-        <div className="mx-52 my-10">
+        <Navbar />
+        <div className="md:px-52 my-10">
           <BlogsLoader />
         </div>
       </div>
     );
   }
   return (
-    <div>
-      <Nabar />
-      <div className="mx-52">
+    <div className="w-full overflow-hidden">
+      <Navbar />
+      <div className="px-4 md:px-48">
         {data.map((item, idx) => (
           <BlogComponents
             id={item.id}

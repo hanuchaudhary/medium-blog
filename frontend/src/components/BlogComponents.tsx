@@ -20,7 +20,7 @@ const BlogComponents = ({
 
   return (
     <Link to={`/blog/${id}`}>
-      <div className="font-mono py-8   border-b select-none">
+      <div className="font-mono w-full py-8 border-b select-none">
         <div className="flex items-center gap-2">
           <div className="avatar h-7 w-7 bg-zinc-600 flex items-center justify-center rounded-full">
             <h1 className="font-semibold capitalize text-white">{name[0]}</h1>
@@ -30,8 +30,8 @@ const BlogComponents = ({
         <div>
           <div className="my-5 cursor-pointer">
             <h1 className="font-semibold capitalize text-2xl">{title}</h1>
-            <p className="text-zinc-700 capitalize">
-              {content.length > 200
+            <p className="text-zinc-700 w-full capitalize">
+              {content.length < 100
                 ? content
                 : content.substring(0, 300) + "..."}
             </p>

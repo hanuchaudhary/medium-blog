@@ -13,7 +13,7 @@ interface fullBlogProps {
 const FullBlog = ({title,content,name}:fullBlogProps) => {
   return (
     <div>
-      <div>
+      <div className="w-full">
         <div className="flex items-center gap-2 font-mono">
           <div className="avatar h-14 w-14 bg-zinc-600 flex items-center justify-center rounded-full">
             <h1 className="font-semibold text-2xl capitalize text-white">{name[0]}</h1>

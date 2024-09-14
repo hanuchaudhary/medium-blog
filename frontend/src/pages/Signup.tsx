@@ -35,7 +35,7 @@ const SignUpForm = () => {
 
   return (
     <div className="flex items-center bg-neutral-100 justify-center h-screen">
-      <div className="relative border-dashed px-16 border-green-950 border-2 p-8 rounded-none font-mono">
+      <div className="relative border-dashed md:px-16 mx-8 border-green-950 border-2 p-4 md:p-8 rounded-none font-mono">
         <div>
           <Link
             to={"/"}

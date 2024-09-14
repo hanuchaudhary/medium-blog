@@ -22,6 +22,8 @@ const SignUpForm = () => {
         `${BACKEND_URL}/api/v1/user/signin`,
         signinInputs
       );
+      console.log(response);
+      
       const jwtToken = response.data.token;
       localStorage.setItem("token", jwtToken);
       navigate("/blogs");
@@ -33,7 +35,7 @@ const SignUpForm = () => {
 
   return (
     <div className="flex items-center bg-zinc-100 justify-center h-screen">
-      <div className="relative border-dashed px-16 border-green-950 border-2 p-8 rounded-none font-mono">
+      <div className="relative border-dashed md:px-16 mx-8 border-green-950 border-2 md:p-8 p-4 rounded-none font-mono">
         <div>
           <Link
             to={"/"}

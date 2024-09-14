@@ -24,8 +24,8 @@ export const useSearchBlog = ({ id }: { id: string }) => {
                             Authorization: localStorage.getItem("token")
                         }
                     });
-                    console.log(response);
-                    
+                console.log(response);
+
                 setLoading(false);
                 setData(response.data.blog);
             } catch (err) {
@@ -34,9 +34,9 @@ export const useSearchBlog = ({ id }: { id: string }) => {
             }
         }
         fetchData();
-    },[])
+    }, [])
 
-    return {data, loading};
+    return { data, loading };
 }
 
 export const useFetchBlogs = () => {
@@ -67,4 +67,36 @@ export const useFetchBlogs = () => {
     return {
         data, loading
     }
+}
+
+interface Profile {
+    name: string;
+    email: string;
+    blog: []
+}
+
+export const useProfile = () => {
+    const [data, setData] = useState<Profile>();
+    const [loading, setLoading] = useState(true);
+    useEffect(() => {
+        const fetchProfile = async () => {
+            try {
+                const response = await axios.get(`${BACKEND_URL}/api/v1/user/me`, {
+                    headers: {
+                        Authorization: localStorage.getItem("token")
+                    }
+                })
+                setLoading(false);
+                const userData = response.data.user;
+                console.log(userData);
+                setData(userData);
+            } catch (error) {
+                console.log(error);
+
+            }
+        }
+        fetchProfile()
+    }, [])
+
+    return { data, loading }
 }

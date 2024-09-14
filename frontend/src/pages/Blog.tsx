@@ -12,7 +12,7 @@ const Blog = () => {
 
   if(loading){
     <Navbar/>
-    return <div className="mx-52 my-10">
+    return <div className="md:px-52 px-4 my-10">
       <FullBlogLoader/>
     </div>
   }
@@ -20,7 +20,7 @@ const Blog = () => {
   return (
     <div>
       <Navbar />
-      <div className="mx-52 my-10">
+      <div className="md:px-52 px-4 my-10">
         <FullBlog
           name={data?.author.name || "Anoymonous"}
           title={data?.title || "Title"}

@@ -30,11 +30,11 @@ const Publish = () => {
   };
 
   return (
-    <div>
+    <div className="w-full">
       <Navbar onClick={OnClickHandler} />
-      <div className="grid grid-cols-8 w-4/5 m-auto  font-mono p-20">
-        <div className="icon border-2 rounded-full h-20 w-20 flex items-center justify-center border-neutral-300 text-neutral-300 select-none mr-5">
-          <h1 className="text-8xl leading-none tracking-tighter ">+</h1>
+      <div className="grid m-auto grid-cols-8  md:m-auto font-mono p-4 md:p-20">
+        <div className="icon border-2 rounded-full h-5 w-5 md:h-20 md:w-20 flex items-center justify-center border-neutral-300 text-neutral-300 select-none mr-5">
+          <h1 className="md:text-8xl text-xl leading-none tracking-tighter ">+</h1>
         </div>
         <div className="col-span-6">
           <div className="title pb-4">
@@ -43,7 +43,7 @@ const Publish = () => {
               onChange={(e) =>
                 setCreateBlog({ ...createBlog, title: e.target.value })
               }
-              className="outline-none text-5xl"
+              className="outline-none text-2xl md:text-5xl"
               type="text"
               placeholder="Title"
             />
@@ -54,7 +54,7 @@ const Publish = () => {
               onChange={(e) =>
                 setCreateBlog({ ...createBlog, content: e.target.value })
               }
-              className="outline-none text-xl w-full h-96"
+              className="outline-none text-sm md:text-xl w-full h-96"
               placeholder="Tell Your Story..."
               name="content"
               id="content"

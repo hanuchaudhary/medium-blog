@@ -4,9 +4,11 @@ const Navbar = ({onClick} : any) => {
   const location = useLocation();
   const path = location.pathname;
 
+
+
   return (
     <div>
-      <nav className="flex items-center justify-between font-mono bg-white py-3 px-8 border-b">
+      <nav className="flex items-center w-full justify-between font-mono bg-white py-3 px-4 md:px-8 border-b">
         <Link to={"/blogs"} className="text-2xl font-bold text-gray-800">
           Medium
         </Link>
@@ -17,7 +19,7 @@ const Navbar = ({onClick} : any) => {
             className="w-full py-2 px-4 bg-gray-100 rounded-full focus:outline-none"
           />
         </div>
-        <div className="flex items-center space-x-4">
+        <div className="flex items-center gap-5">
           {path === "/publish" ? (
             <div>
               <button onClick={onClick} className="py-2 px-4 bg-green-500 rounded-full hover:bg-green-600">
@@ -36,9 +38,9 @@ const Navbar = ({onClick} : any) => {
             🔔
           </button>
 
-          <div className="w-10 h-10 flex items-center justify-center bg-gray-500 text-white rounded-full">
+          <Link to={"/me"} className="w-10 h-10 flex items-center justify-center bg-green-500 hover:bg-green-600 hover:scale-105 transition-transform text-white rounded-full">
             A
-          </div>
+          </Link>
         </div>
       </nav>
     </div>
