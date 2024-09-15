@@ -5,6 +5,7 @@ import { useParams } from "react-router-dom";
 import Skeleton from "../components/Skeleton";
 
 const Blog = () => {
+
   const { id } = useParams();
   const { data, loading } = useSearchBlog({
     id: id || "",
@@ -12,7 +13,7 @@ const Blog = () => {
 
   if(loading){
     <Navbar/>
-    return <div className="md:px-52 px-4 my-10">
+    return <div className="lg:px-52 md:px-24 px-4 my-10">
       <Skeleton/>
     </div>
   }
@@ -20,7 +21,7 @@ const Blog = () => {
   return (
     <div>
       <Navbar />
-      <div className="md:px-52 px-4 my-10">
+      <div className="lg:px-52 md:px-24 px-4 my-10">
         <FullBlog
           name={data?.author.name || "Anoymonous"}
           title={data?.title || "Title"}

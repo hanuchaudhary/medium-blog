@@ -9,10 +9,12 @@ import AuthTop from "../components/AuthTop";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { BACKEND_URL } from "../config";
+import { X } from "lucide-react";
 
 const SignUpForm = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [signupInputs, setSignupInputs] = useState<SignupType>({
     email: "",
     password: "",
@@ -20,6 +22,13 @@ const SignUpForm = () => {
   });
 
   const handleSubmit = async () => {
+    if (!signupInputs.email || !signupInputs.name || !signupInputs.password) {
+      setError(
+        "Please fill in all required fields: Email, Full Name, and Password."
+      );
+      return;
+    }
+
     try {
       setLoading(true);
       const response = await axios.post(
@@ -29,10 +38,11 @@ const SignUpForm = () => {
 
       const jwt = response.data.token;
       localStorage.setItem("token", jwt);
+      setError(null);
       navigate("/blogs");
     } catch (error) {
+      setError("Error while Signingup : " + error);
       setLoading(false);
-      console.log(error);
     }
   };
 
@@ -43,13 +53,14 @@ const SignUpForm = () => {
           <Spinner />
         </div>
       ) : (
-        <div className="relative border-dashed md:px-16 mx-8 border-green-950 border-2 p-4 md:p-8 rounded-none font-mono">
+        <div
+          className={`relative border-dashed md:px-16 mx-8 ${
+            error ? "border-red-700" : "border-green-950"
+          }  border-2 md:p-8 p-4 rounded-none font-mono`}
+        >
           <div>
-            <Link
-              to={"/"}
-              className="absolute top-2 right-4 font-semibold text-2xl"
-            >
-              ×
+            <Link to={"/"} className="absolute top-4 right-4">
+              <X />
             </Link>
           </div>
           <div>
@@ -58,7 +69,9 @@ const SignUpForm = () => {
               subTitle={"Create your account to get started."}
             />
           </div>
-
+          {error && (
+            <h1 className="text-red-700 text-center font-semibold">{error}</h1>
+          )}
           <Input
             name="name"
             label="Full Name"

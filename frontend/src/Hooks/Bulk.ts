@@ -69,34 +69,39 @@ export const useFetchBlogs = () => {
     }
 }
 
+interface Blog {
+    title: string;
+    content: string;
+}
+
 interface Profile {
     name: string;
     email: string;
-    blog: []
+    blog: Blog[];
 }
 
-export const useProfile = () => {
-    const [data, setData] = useState<Profile>();
+export const useProfile = (): { data: Profile | null; loading: boolean } => {
+    const [data, setData] = useState<Profile | null>(null);
     const [loading, setLoading] = useState(true);
+
     useEffect(() => {
         const fetchProfile = async () => {
             try {
                 const response = await axios.get(`${BACKEND_URL}/api/v1/user/me`, {
                     headers: {
-                        Authorization: localStorage.getItem("token")
-                    }
-                })
+                        Authorization: localStorage.getItem("token") || "",
+                    },
+                });
                 setLoading(false);
                 const userData = response.data.user;
-                console.log(userData);
                 setData(userData);
             } catch (error) {
                 console.log(error);
-
+                setLoading(false);
             }
-        }
-        fetchProfile()
-    }, [])
+        };
+        fetchProfile();
+    }, []);
 
-    return { data, loading }
-}
+    return { data, loading };
+};

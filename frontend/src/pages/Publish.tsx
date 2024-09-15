@@ -5,6 +5,7 @@ import { CreateBlogType } from "@hanuchaudhary/medium-app";
 import axios from "axios";
 import { BACKEND_URL } from "../config";
 import { useNavigate } from "react-router-dom";
+import { PlusCircle } from "lucide-react";
 
 const Publish = () => {
   const navigate = useNavigate();
@@ -13,23 +14,32 @@ const Publish = () => {
     title: "",
     content: "",
   });
+  const [error, setError] = useState<string | null>(null);
 
   const OnClickHandler = async () => {
+    if (!createBlog.title || !createBlog.content) {
+      setError("Title and content cannot be empty.");
+      return;
+    }
+    
     try {
       setLoading(true);
+      setError(null);
       const response = await axios.post(
         `${BACKEND_URL}/api/v1/blog/create`,
         createBlog,
         {
           headers: {
-            Authorization: localStorage.getItem("token"),
+            Authorization : localStorage.getItem("token")
           },
         }
       );
       navigate("/blog/" + response.data.id);
     } catch (error) {
-      setLoading(false);
+      setError("Error creating blog. Please try again.");
       console.error("Error creating blog:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -42,21 +52,21 @@ const Publish = () => {
             <Spinner />
           </div>
         ) : (
-          <div className="grid m-auto grid-cols-8  md:m-auto font-mono p-4 md:p-20">
-            <div className="icon border-2 rounded-full h-5 w-5 md:h-20 md:w-20 flex items-center justify-center border-neutral-300 text-neutral-300 select-none mr-5">
-              <h1 className="md:text-8xl text-xl leading-none tracking-tighter ">
-                +
-              </h1>
+          <div className="grid m-auto grid-cols-8 md:m-auto font-mono p-4 md:p-20">
+            <div className="icon select-none">
+              <PlusCircle className="md:w-16 md:h-16 lg:w-24 lg:h-24 h-8 w-8 text-neutral-300" />
             </div>
             <div className="col-span-6">
+              {error && (
+                <div className="text-red-500 mb-4">{error}</div>
+              )}
               <div className="title pb-4">
-                <input
+                <textarea
                   value={createBlog.title}
                   onChange={(e) =>
                     setCreateBlog({ ...createBlog, title: e.target.value })
                   }
-                  className="outline-none text-2xl md:text-5xl"
-                  type="text"
+                  className="outline-none text-2xl md:text-5xl w-full"
                   placeholder="Title"
                 />
               </div>

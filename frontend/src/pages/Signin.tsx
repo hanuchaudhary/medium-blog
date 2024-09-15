@@ -9,16 +9,23 @@ import { Link, useNavigate } from "react-router-dom";
 import { SigninType } from "@hanuchaudhary/medium-app";
 import axios from "axios";
 import { BACKEND_URL } from "../config";
+import { X } from "lucide-react";
 
 const SignUpForm = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [signinInputs, setSigninInputs] = useState<SigninType>({
     email: "",
     password: "",
   });
 
   const handleSubmit = async () => {
+    if (!signinInputs.email || !signinInputs.password) {
+      setError("-- Email and Password cannot be empty --");
+      return;
+    }
+
     try {
       setLoading(true);
       const response = await axios.post(
@@ -27,10 +34,10 @@ const SignUpForm = () => {
       );
       const jwtToken = response.data.token;
       localStorage.setItem("token", jwtToken);
+      setError(null);
       navigate("/blogs");
     } catch (error) {
-      setLoading(false);
-      console.log(error);
+      setError("Error while Login!! : " + error);
     }
   };
 
@@ -41,13 +48,14 @@ const SignUpForm = () => {
           <Spinner />
         </div>
       ) : (
-        <div className="relative border-dashed md:px-16 mx-8 border-green-950 border-2 md:p-8 p-4 rounded-none font-mono">
+        <div
+          className={`relative border-dashed md:px-16 mx-8 ${
+            error ? "border-red-700" : "border-green-950"
+          }  border-2 md:p-8 p-4 rounded-none font-mono`}
+        >
           <div>
-            <Link
-              to={"/"}
-              className="absolute top-2 right-4 font-semibold text-2xl"
-            >
-              ×
+            <Link to={"/"} className="absolute top-4 right-4">
+              <X />
             </Link>
           </div>
           <div>
@@ -56,6 +64,9 @@ const SignUpForm = () => {
               subTitle={"Signin to your account to get started."}
             />
           </div>
+          {error && (
+            <h1 className="text-red-600 font-semibold pb-4">{error}</h1>
+          )}
           <Input
             name="email"
             label="Email"

@@ -27,8 +27,8 @@ const FullBlog = ({title,content,name}:fullBlogProps) => {
           </div>
         </div>
         <div className="content font-mono">
-          <h1 className="font-semibold text-5xl my-7 capitalize">{title}</h1>
-          <p className="text-xl capitalize">{content}</p>
+          <h1 className="font-semibold md:text-5xl text-3xl my-7 capitalize">{title}</h1>
+          <p className="md:text-xl text-lg capitalize">{content}</p>
         </div>
       </div>
     </div>

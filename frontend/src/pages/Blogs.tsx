@@ -23,6 +23,7 @@ export const Blogs = () => {
     <div className="w-full overflow-hidden">
       <Navbar />
       <div className="px-4 md:px-48">
+        <h1 className="py-5 font-semibold text-4xl text-green-900 border-b-2 border-dashed mb-8 border-green-900">-- Blogs --</h1>
         {data.map((item, idx) => (
           <BlogComponents
             id={item.id}
