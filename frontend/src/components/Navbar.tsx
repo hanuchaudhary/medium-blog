@@ -3,16 +3,16 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import DropdownMenu from "./DropdownMenu";
 import { Search } from "lucide-react";
 import { useProfile } from "../Hooks/Bulk";
-
 const Navbar = ({ onClick }: any) => {
+
   const navigate = useNavigate();
   const location = useLocation();
   const path = location.pathname;
+  
   const [menu, setMenu] = useState(false);
   const { data } = useProfile(); //logo
-  const logoName = (data?.name || "")?.split(" ");
+  const logoName = data?.name?.split(" ") || [];
 
-  //for toggling
   const handleMenu = () => {
     setMenu((prev) => !prev);
   };
@@ -85,15 +85,14 @@ const Navbar = ({ onClick }: any) => {
             🔔
           </button>
 
-          <div
-            onClick={handleMenu}
-            className="w-10 h-10 select-none cursor-pointer flex items-center justify-center bg-green-500 font-semibold hover:bg-green-600 hover:scale-105 transition-transform text-white rounded-full"
-          >
-            {logoName.length > 1
-              ? `${logoName[0][0]}${logoName[1][0]}`
-              : logoName[0]
-              ? logoName[0][0]
-              : ""}{" "}
+          <div onClick={handleMenu}>
+            <div className="w-10 h-10 select-none cursor-pointer flex items-center justify-center bg-green-500 font-semibold hover:bg-green-600 hover:scale-105 transition-transform text-white rounded-full">
+              {logoName.length > 1
+                ? `${logoName[0][0]}${logoName[1][0]}`
+                : logoName[0]
+                ? logoName[0][0]
+                : ""}
+            </div>
           </div>
         </div>
       </nav>

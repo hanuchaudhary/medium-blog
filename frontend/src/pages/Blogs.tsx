@@ -23,18 +23,30 @@ export const Blogs = () => {
     <div className="w-full overflow-hidden">
       <Navbar />
       <div className="px-4 md:px-48">
-        <h1 className="py-5 font-semibold text-4xl text-green-900 border-b-2 border-dashed mb-8 border-green-900">-- Blogs --</h1>
-        {data.map((item, idx) => (
-          <BlogComponents
-            id={item.id}
-            to={`/blog/${item.id}`}
-            key={idx}
-            title={item.title}
-            content={item.content}
-            name={item.author.name}
-            published="11 Sept,2077"
-          />
-        ))}
+        <h1 className="py-5 font-semibold text-4xl text-green-900 border-b-2 border-dashed mb-8 border-green-900">
+          -- Blogs --
+        </h1>
+        {data.map((item, idx) => {
+          // @ts-ignore
+          const date = new Date(item.publishedAt);
+          const formattedDate = date.toLocaleDateString("en-GB", {
+            day: "2-digit",
+            month: "long",
+            year: "numeric",
+          });
+
+          return (
+            <BlogComponents
+              id={item.id}
+              to={`/blog/${item.id}`}
+              key={idx}
+              title={item.title}
+              content={item.content}
+              name={item.author.name}
+              published={formattedDate} // Pass formatted date here
+            />
+          );
+        })}
       </div>
     </div>
   );

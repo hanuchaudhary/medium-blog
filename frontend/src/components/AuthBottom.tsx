@@ -8,7 +8,7 @@ interface labelAuth {
 
 const AuthBottom = ({ label, title, to }: labelAuth) => {
   return (
-    <div className="my-5">
+    <div className="md:my-5 my-3">
       <h1 className="text-center">
         {title}{" "}
         <Link className="hover:underline text-green-800 font-semibold" to={to}>

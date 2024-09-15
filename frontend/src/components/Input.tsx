@@ -11,8 +11,8 @@ interface InputProps {
 
 const Input = ({ label, type, value, onChange, placeholder , name }: InputProps) => {
   return (
-    <div className="mb-6">
-      <label className="block text-sm font-medium text-green-900 mb-2">
+    <div className="mb-4 md:mb-6">
+      <label className="block text-sm  font-medium text-green-900 mb-1 md:mb-2">
         {label}
       </label>
       <input

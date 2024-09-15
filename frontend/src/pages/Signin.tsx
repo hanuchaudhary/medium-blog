@@ -49,12 +49,12 @@ const SignUpForm = () => {
         </div>
       ) : (
         <div
-          className={`relative border-dashed md:px-16 mx-8 ${
+          className={`relative border-dashed md:px-16 mx-5 ${
             error ? "border-red-700" : "border-green-950"
           }  border-2 md:p-8 p-4 rounded-none font-mono`}
         >
           <div>
-            <Link to={"/"} className="absolute top-4 right-4">
+            <Link to={"/"} className="text-neutral-500 absolute top-2 right-2">
               <X />
             </Link>
           </div>

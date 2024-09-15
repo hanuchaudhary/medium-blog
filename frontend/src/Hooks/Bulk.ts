@@ -10,7 +10,6 @@ interface Blog {
         name: string
     }
 }
-
 export const useSearchBlog = ({ id }: { id: string }) => {
     const [data, setData] = useState<Blog>();
     const [loading, setLoading] = useState(true);
@@ -24,8 +23,6 @@ export const useSearchBlog = ({ id }: { id: string }) => {
                             Authorization: localStorage.getItem("token")
                         }
                     });
-                console.log(response);
-
                 setLoading(false);
                 setData(response.data.blog);
             } catch (err) {
@@ -73,13 +70,11 @@ interface Blog {
     title: string;
     content: string;
 }
-
 interface Profile {
     name: string;
     email: string;
     blog: Blog[];
 }
-
 export const useProfile = (): { data: Profile | null; loading: boolean } => {
     const [data, setData] = useState<Profile | null>(null);
     const [loading, setLoading] = useState(true);
@@ -106,30 +101,33 @@ export const useProfile = (): { data: Profile | null; loading: boolean } => {
     return { data, loading };
 };
 
-// export const useDelete = ({ id }: { id: string }) => {
-//     const [loading, setLoading] = useState(false);
-//     const [data, setData] = useState();
 
-//     useEffect(() => {
-//         const fetchData = async () => {
-//             try {
-//                 const response = await axios.get(`${BACKEND_URL}/api/v1/blog/deleteblog/${id}`,
-//                     {
-//                         headers: {
-//                             Authorization: localStorage.getItem("token")
-//                         }
-//                     });
-//                 console.log(response);
-
-//                 setLoading(true);
-//                 setData(response.data.blog);
-//             } catch (err) {
-//                 setLoading(false)
-//                 console.log(err);
-//             }
-//         }
-//         fetchData();
-//     }, [])
-
-//     return { data, loading };
-// }
+export const useDelete = () => {
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState<null | string>(null);
+    const [isDeleted, setIsDeleted] = useState(false);
+  
+    const deleteBlog = async (id: string) => {
+      setLoading(true);
+      try {
+        await axios.delete(`${BACKEND_URL}/api/v1/blog/delete`, {
+          headers: {
+            Authorization: localStorage.getItem("token") || "",
+          },
+          data: {
+            id, 
+          },
+        });
+        setLoading(false);
+        setIsDeleted(true);
+        console.log("Blog deleted successfully!");
+        window.location.reload();
+      } catch (err) {
+        setLoading(false);
+        setError("Failed to delete the blog.");
+        console.log(err);
+      }
+    };
+  
+    return { deleteBlog, loading, error, isDeleted };
+  };

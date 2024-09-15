@@ -17,6 +17,7 @@ const Publish = () => {
   const [error, setError] = useState<string | null>(null);
 
   const OnClickHandler = async () => {
+
     if (!createBlog.title || !createBlog.content) {
       setError("Title and content cannot be empty.");
       return;
@@ -34,7 +35,9 @@ const Publish = () => {
           },
         }
       );
-      navigate("/blog/" + response.data.id);
+      console.log(response.data.blog.id);
+      
+      navigate("/blog/" + response.data.blog.id);
     } catch (error) {
       setError("Error creating blog. Please try again.");
       console.error("Error creating blog:", error);

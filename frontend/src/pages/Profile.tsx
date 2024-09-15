@@ -1,18 +1,29 @@
 import { Link, useNavigate } from "react-router-dom";
 import Skeleton from "../components/Skeleton";
 import Navbar from "../components/Navbar";
-import { useProfile } from "../Hooks/Bulk";
+import { useDelete, useProfile } from "../Hooks/Bulk";
 import { CircleX } from "lucide-react";
+import UserBlog from "../components/UserBlog";
 
 const Profile = () => {
   const navigate = useNavigate();
   const { data, loading } = useProfile();
+  
+  const { deleteBlog, loading: deleteLoading, error, isDeleted } = useDelete();
+
   const handleLogout = () => {
     localStorage.removeItem("token");
     navigate("/");
   };
 
-  if (loading) {
+  const handleDelete = async (id: string) => {
+    await deleteBlog(id);
+    if (!error && isDeleted) {
+      console.log(`Blog with ID ${id} deleted successfully!`);
+    }
+  };
+
+  if (loading || deleteLoading) {
     return (
       <div>
         <Navbar />
@@ -32,9 +43,7 @@ const Profile = () => {
       </div>
       <div className="flex justify-between items-center mb-8">
         <div>
-          <h1 className="text-3xl font-semibold text-green-950">
-            {data?.name}
-          </h1>
+          <h1 className="text-3xl font-semibold text-green-950">{data?.name}</h1>
           <p className="text-green-800">{data?.email}</p>
         </div>
         <button
@@ -49,18 +58,13 @@ const Profile = () => {
           -- My Blogs --
         </h2>
         {data?.blog.map((e) => (
-          <div className="mb-6 p-4 bg-neutral-700 rounded-lg shadow cursor-pointer select-none relative">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-xl font-semibold text-neutral-200 mb-2">
-                {e.title}
-              </h3>
-              <div>
-                <CircleX />
-              </div>
-            </div>
-            <p className="text-neutral-400 mb-4">{(e.content.length < 200) ? e.content : e.content.substring(0,150) + "..."}</p>
-            <p className="text-green-400 font-semibold">Likes: 10</p>
-          </div>
+          <UserBlog
+            key={e.id}
+            title={e.title}
+            content={e.content}
+            id={e.id}
+            onClick={() => handleDelete(e.id)} 
+          />
         ))}
         <p className="text-neutral-400">No more blogs to display.</p>
       </div>
