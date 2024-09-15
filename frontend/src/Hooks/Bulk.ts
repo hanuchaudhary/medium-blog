@@ -105,3 +105,31 @@ export const useProfile = (): { data: Profile | null; loading: boolean } => {
 
     return { data, loading };
 };
+
+// export const useDelete = ({ id }: { id: string }) => {
+//     const [loading, setLoading] = useState(false);
+//     const [data, setData] = useState();
+
+//     useEffect(() => {
+//         const fetchData = async () => {
+//             try {
+//                 const response = await axios.get(`${BACKEND_URL}/api/v1/blog/deleteblog/${id}`,
+//                     {
+//                         headers: {
+//                             Authorization: localStorage.getItem("token")
+//                         }
+//                     });
+//                 console.log(response);
+
+//                 setLoading(true);
+//                 setData(response.data.blog);
+//             } catch (err) {
+//                 setLoading(false)
+//                 console.log(err);
+//             }
+//         }
+//         fetchData();
+//     }, [])
+
+//     return { data, loading };
+// }
