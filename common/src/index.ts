@@ -16,8 +16,8 @@ export const signinInput = z.object({
 export type SigninType = z.infer<typeof signinInput>;
 
 export const createBlogInput = z.object({
-    title: z.string(),
-    content: z.string(),
+    title: z.string().min(10).max(200),
+    content: z.string().min(20),
 });
 
 export type CreateBlogType = z.infer<typeof createBlogInput>;

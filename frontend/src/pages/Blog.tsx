@@ -2,7 +2,7 @@ import FullBlog from "../components/FullBlog";
 import { useSearchBlog } from "../Hooks/Bulk";
 import Navbar from "../components/Navbar";
 import { useParams } from "react-router-dom";
-import FullBlogLoader from "../components/FullBlogLoader";
+import Skeleton from "../components/Skeleton";
 
 const Blog = () => {
   const { id } = useParams();
@@ -13,7 +13,7 @@ const Blog = () => {
   if(loading){
     <Navbar/>
     return <div className="md:px-52 px-4 my-10">
-      <FullBlogLoader/>
+      <Skeleton/>
     </div>
   }
 

@@ -1,5 +1,5 @@
 import BlogComponents from "../components/BlogComponents";
-import BlogsLoader from "../components/BlogsLoader";
+import Skeleton from "../components/Skeleton";
 import Navbar from "../components/Navbar";
 import { useFetchBlogs } from "../Hooks/Bulk";
 
@@ -10,8 +10,11 @@ export const Blogs = () => {
     return (
       <div className="w-full my-10">
         <Navbar />
-        <div className="md:px-52 my-10">
-          <BlogsLoader />
+        <div className="md:px-52 px-4 w-full my-10 flex flex-col gap-20">
+          <Skeleton />
+          <Skeleton />
+          <Skeleton />
+          <Skeleton />
         </div>
       </div>
     );
