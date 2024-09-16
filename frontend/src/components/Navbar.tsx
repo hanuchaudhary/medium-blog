@@ -21,6 +21,13 @@ function useDebounce(inputValue: string, ms: number) {
   return value;
 }
 
+interface blogInterface {
+  title: string;
+  content: string;
+  id: string;
+  name: string;
+}
+
 const Navbar = ({ onClick }: any) => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -29,12 +36,12 @@ const Navbar = ({ onClick }: any) => {
   const [menu, setMenu] = useState(false);
   const { data } = useProfile();
   const logoName = data?.name?.split(" ") || [];
-  const [blog, setBlog] = useState([]); // Holds blog search results
+  const [blog, setBlog] = useState<blogInterface[]>([]); // blog search results
   const [searchQuery, setSearchQuery] = useState(""); // Input value
   const debounceValue = useDebounce(searchQuery, 200);
   const [searchBackground, setSearchBackground] = useState(false);
 
-  const searchRef = useRef<HTMLDivElement>(null); // For detecting outside clicks
+  const searchRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const fetchBlogs = async () => {
@@ -63,27 +70,10 @@ const Navbar = ({ onClick }: any) => {
     navigate("/signin");
   };
 
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        searchRef.current &&
-        !searchRef.current.contains(event.target as Node)
-      ) {
-        setSearchBackground(false);
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
-
   return (
     <div>
       {searchBackground && (
-        <div className="background w-full h-full absolute bg-neutral-500 bg-opacity-45">
+        <div className="background w-full h-full rounded-b-xl absolute bg-neutral-500 bg-opacity-45">
           <div className="bg-neutral-50 mt-20 mx-10 rounded-md">
             {blog.map((e) => (
               <SearchBlogComponent
