@@ -119,7 +119,6 @@ blogRouter.get("/bulk", async (c) => {
             where: {
                 OR: [
                     { title: { contains: filter, mode: "insensitive" } },
-                    // { content: { contains: filter, mode: "insensitive" } },
                 ],
             },
             select: {
@@ -135,6 +134,9 @@ blogRouter.get("/bulk", async (c) => {
                         name: true,
                     }
                 }
+            },
+            orderBy:{
+                publishedAt : "desc"
             }
         });
 
@@ -181,6 +183,7 @@ blogRouter.get("/:id", async (c) => {
                 id: true,
                 title: true,
                 content: true,
+                publishedAt : true,
                 author: {
                     select: {
                         name: true

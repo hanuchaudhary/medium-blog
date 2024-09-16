@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import DropdownMenu from "./DropdownMenu";
-import { Search } from "lucide-react";
+import { CircleX, Search } from "lucide-react";
 import { useProfile } from "../Hooks/Bulk";
 import SearchBlogComponent from "./SearchBlogComponent";
 import axios from "axios";
@@ -33,32 +33,44 @@ const Navbar = ({ onClick }: any) => {
   const location = useLocation();
   const path = location.pathname;
 
-  const [menu, setMenu] = useState(false);
-  const { data } = useProfile();
-  const logoName = data?.name?.split(" ") || [];
-  const [blog, setBlog] = useState<blogInterface[]>([]); // blog search results
-  const [searchQuery, setSearchQuery] = useState(""); // Input value
-  const debounceValue = useDebounce(searchQuery, 200);
-  const [searchBackground, setSearchBackground] = useState(false);
+  //-----------------------------------
 
-  const searchRef = useRef<HTMLDivElement>(null);
+  const [menu, setMenu] = useState(false); //toggling profile menu
+  const [search, setSearch] = useState(false); //toggling seach bar for mobile
+  const [searchBackground, setSearchBackground] = useState(false); //style for search
+  const searchRef = useRef<HTMLDivElement>(null); //ref for search
+
+  //-------------------------------------
+
+  const { data } = useProfile();
+  const [blog, setBlog] = useState<blogInterface[]>([]); //data for search results
+  const logoName = data?.name.split(" ") || []; //for avatar
+  const [searchQuery, setSearchQuery] = useState(""); // Input value storing
+  const debounceValue = useDebounce(searchQuery, 200); //debouncing
 
   useEffect(() => {
     const fetchBlogs = async () => {
-      const response = await axios.get(
-        `${BACKEND_URL}/api/v1/blog/bulk?filter=${debounceValue}`,
-        {
-          headers: {
-            Authorization: localStorage.getItem("token"),
-          },
-        }
-      );
-      console.log(response.data.blogs);
-      setBlog(response.data.blogs);
+      if (debounceValue.trim() === "") {
+        setBlog([]);
+        return;
+      }
+
+      try {
+        const response = await axios.get(
+          `${BACKEND_URL}/api/v1/blog/bulk?filter=${debounceValue}`,
+          {
+            headers: {
+              Authorization: localStorage.getItem("token"),
+            },
+          }
+        );
+        setBlog(response.data.blogs);
+      } catch (error) {
+        console.error("Failed to fetch blogs", error);
+      }
     };
-    if (debounceValue) {
-      fetchBlogs();
-    }
+
+    fetchBlogs();
   }, [debounceValue]);
 
   const handleMenu = () => {
@@ -72,7 +84,7 @@ const Navbar = ({ onClick }: any) => {
 
   return (
     <div>
-      {searchBackground && (
+      {searchBackground && searchQuery.trim() !== "" && (
         <div className="background w-full h-full rounded-b-xl absolute bg-neutral-500 bg-opacity-45">
           <div className="bg-neutral-50 mt-20 mx-10 rounded-md">
             {blog.map((e) => (
@@ -101,7 +113,7 @@ const Navbar = ({ onClick }: any) => {
             to={"/blogs"}
             className="text-2xl md:block hidden font-bold text-gray-800"
           >
-            Medium
+            Medium.
           </Link>
           <Link
             to={"/blogs"}
@@ -111,7 +123,7 @@ const Navbar = ({ onClick }: any) => {
           </Link>
         </div>
 
-        {/* Search Bar */}
+        {/* Search Bar for lg */}
         <div className="search relative w-1/3 md:block hidden" ref={searchRef}>
           <input
             type="text"
@@ -124,10 +136,26 @@ const Navbar = ({ onClick }: any) => {
         </div>
 
         <div className="flex items-center gap-5">
-          <div className="searchIcon block md:hidden">
-            <Search />
+          {/* Search Bar for sm */}
+          <div className="relative flex gap-2 items-center z-10 md:hidden">
+            <input
+              type="text"
+              name="search"
+              onClick={() => setSearchBackground(true)}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search"
+              className={` focus:outline transition-all duration-300 ${
+                search ? "block" : "hidden"
+              } py-2 px-4 bg-gray-100 rounded-full focus:outline-none`}
+            />
+            {search ? (
+              <CircleX onClick={() => setSearch((prev) => !prev)} />
+            ) : (
+              <Search onClick={() => setSearch((prev) => !prev)} />
+            )}
           </div>
-          {path === "/publish" ? (
+
+          {(path === "/publish") ? (
             <div className="flex items-center justify-center gap-2 md:gap-4">
               <Link to={"/blogs"}>
                 <button className="md:py-2 md:px-4 py-1 px-2 bg-red-500 text-red-900 font-semibold rounded-full hover:bg-red-600">
@@ -143,7 +171,7 @@ const Navbar = ({ onClick }: any) => {
             </div>
           ) : (
             <Link to={"/publish"}>
-              <button className="py-2 px-4 text-green-900 font-semibold bg-green-100 rounded-full hover:bg-green-200">
+              <button className={`py-2 px-4 text-green-900 font-semibold bg-green-100 rounded-full hover:bg-green-200 ${search ? "hidden" : "block"}`}>
                 Write
               </button>
             </Link>
@@ -154,7 +182,7 @@ const Navbar = ({ onClick }: any) => {
           </button>
 
           <div onClick={handleMenu}>
-            <div className="w-10 h-10 select-none cursor-pointer flex items-center justify-center bg-green-500 font-semibold hover:bg-green-600 hover:scale-105 transition-transform text-white rounded-full">
+            <div className={`w-10 h-10 select-none cursor-pointer flex items-center justify-center bg-green-500 font-semibold hover:bg-green-600 hover:scale-105 transition-transform text-white rounded-full ${search ? "hidden" : "block"}`}>
               {logoName.length > 1
                 ? `${logoName[0][0]}${logoName[1][0]}`
                 : logoName[0]

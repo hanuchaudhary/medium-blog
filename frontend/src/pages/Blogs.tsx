@@ -22,9 +22,9 @@ export const Blogs = () => {
   return (
     <div className="w-full overflow-hidden">
       <Navbar />
-      <div className="px-4 md:px-48">
-        <h1 className="py-5 select-none font-semibold text-4xl text-green-900 border-b-2 border-dashed mb-8 border-green-900">
-          -- Blogs --
+      <div className="px-4 md:px-24 lg:px-48">
+        <h1 className="py-2 md:py-5 select-none font-semibold text-2xl md:text-4xl text-green-900 border-b-2 border-dashed mb-8 border-green-900">
+          Blogs
         </h1>
         {data.map((item, idx) => {
           // @ts-ignore

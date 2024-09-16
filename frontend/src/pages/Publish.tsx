@@ -17,7 +17,6 @@ const Publish = () => {
   const [error, setError] = useState<string | null>(null);
 
   const OnClickHandler = async () => {
-
     if (!createBlog.title || !createBlog.content) {
       setError("Title and content cannot be empty.");
       return;
@@ -36,7 +35,6 @@ const Publish = () => {
         }
       );
       console.log(response.data.blog.id);
-      
       navigate("/blog/" + response.data.blog.id);
     } catch (error) {
       setError("Error creating blog. Please try again.");
@@ -55,9 +53,9 @@ const Publish = () => {
             <Spinner />
           </div>
         ) : (
-          <div className="grid m-auto grid-cols-8 md:m-auto font-mono p-4 md:p-20">
+          <div className="grid grid-cols-8 w-full font-mono p-4 md:p-20">
             <div className="icon select-none">
-              <PlusCircle className="md:w-16 md:h-16 lg:w-24 lg:h-24 h-8 w-8 text-neutral-300" />
+              <PlusCircle className="md:w-16 md:h-16 lg:w-24 lg:h-24 h-5 w-5 text-neutral-300" />
             </div>
             <div className="col-span-6">
               {error && (
@@ -69,7 +67,7 @@ const Publish = () => {
                   onChange={(e) =>
                     setCreateBlog({ ...createBlog, title: e.target.value })
                   }
-                  className="outline-none text-2xl md:text-5xl w-full"
+                  className="outline-none text-xl md:text-3xl w-full"
                   placeholder="Title"
                 />
               </div>

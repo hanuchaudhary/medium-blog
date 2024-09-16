@@ -20,10 +20,10 @@ const BlogComponents = ({
 
   return (
     <Link to={`/blog/${id}`}>
-      <div className="font-mono w-full py-8 border-b select-none">
+      <div className="font-mono hover:bg-neutral-100 transition-colors rounded-md p-2 w-full py-5 md:py-8 border-b select-none">
         <div className="flex items-center gap-2">
           <div className="avatar">
-            <div className="w-10 h-10 select-none cursor-pointer flex items-center justify-center bg-green-500 capitalize font-semibold hover:bg-green-600 hover:scale-105 transition-transform text-white rounded-full">
+            <div className="md:w-10 md:h-10 h-7 w-7 select-none cursor-pointer flex items-center justify-center bg-green-500 text-sm capitalize font-semibold hover:bg-green-600 hover:scale-105 transition-transform text-white rounded-full">
               {logoName.length > 1
                 ? `${logoName[0][0]}${logoName[1][0]}`
                 : logoName[0]
@@ -31,12 +31,12 @@ const BlogComponents = ({
                 : ""}
             </div>
           </div>
-          <h1 className="font-semibold capitalize text-xl md:text-2xl">{name}</h1>
+          <h1 className="font-semibold capitalize text-lg md:text-2xl">{name}</h1>
         </div>
         <div>
           <div className="my-5 cursor-pointer">
-            <h1 className="font-semibold capitalize md:text-3xl text-2xl mb-2">{title}</h1>
-            <p className="text-zinc-700 w-full capitalize">
+            <h1 className="font-semibold leading-tight capitalize md:text-3xl text-lg mb-2">{title}</h1>
+            <p className="text-zinc-700 text-xs md:text-lg w-full capitalize">
               {content.length < 100
                 ? content
                 : content.substring(0, 200) + "..."}
@@ -46,9 +46,9 @@ const BlogComponents = ({
         <div className="flex items-center gap-4">
           <div className="date flex">
             <div className="icon">⚡</div>
-            <h1 className="font-semibold">{published} | </h1>
+            <h1 className="font-semibold text-sm">{published} | </h1>
           </div>
-          <p>{Math.ceil(content.length / 100) + " Min Read"}</p>
+          <p className="text-sm">{Math.ceil(content.length / 100) + " Min Read"}</p>
         </div>
       </div>
     </Link>

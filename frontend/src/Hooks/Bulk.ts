@@ -3,9 +3,10 @@ import { useEffect, useState } from "react";
 import { BACKEND_URL } from "../config";
 
 interface Blog {
-    id: string,
-    title: string,
-    content: string,
+    id: string;
+    title: string;
+    content: string;
+    publishedAt: string;
     author: {
         name: string
     },
@@ -25,6 +26,8 @@ export const useSearchBlog = ({ id }: { id: string }) => {
                         }
                     });
                 setLoading(false);
+                console.log(response.data.blog);
+
                 setData(response.data.blog);
             } catch (err) {
                 setLoading(true)
@@ -37,25 +40,24 @@ export const useSearchBlog = ({ id }: { id: string }) => {
     return { data, loading };
 }
 
-export const useFetchBlogs = (filter: string = "") => {
+export const useFetchBlogs = () => {
     const [data, setData] = useState<Blog[]>([]);
     const [loading, setLoading] = useState(true);
+    const [filter, setFilter] = useState([]);
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get(`${BACKEND_URL}/api/v1/blog/bulk`, {
-                    params: { filter },
+                const response = await axios.get(`${BACKEND_URL}/api/v1/blog/bulk?filter=${filter}`, {
+                    // params: { filter },
                     headers: {
                         Authorization: localStorage.getItem("token"),
                     },
                 });
-
                 setLoading(false);
-                console.log(response.data.blogs);
-
                 setData(response.data.blogs);
+
             } catch (err) {
                 setLoading(false);
                 setError("Failed to fetch blogs");
@@ -69,10 +71,6 @@ export const useFetchBlogs = (filter: string = "") => {
     return { data, loading, error };
 };
 
-interface Blog {
-    title: string;
-    content: string;
-}
 interface Profile {
     name: string;
     email: string;

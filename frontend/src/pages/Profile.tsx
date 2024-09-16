@@ -4,6 +4,7 @@ import Navbar from "../components/Navbar";
 import { useDelete, useProfile } from "../Hooks/Bulk";
 import { CircleX } from "lucide-react";
 import UserBlog from "../components/UserBlog";
+import Button from "../components/Button";
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -27,7 +28,9 @@ const Profile = () => {
     return (
       <div>
         <Navbar />
-        <div>
+        <div className="lg:px-52 flex flex-col gap-5 md:px-24 px-4 my-10">
+          <Skeleton />
+          <Skeleton />
           <Skeleton />
         </div>
       </div>
@@ -46,12 +49,9 @@ const Profile = () => {
           <h1 className="text-3xl font-semibold text-green-950">{data?.name}</h1>
           <p className="text-green-800">{data?.email}</p>
         </div>
-        <button
-          onClick={handleLogout}
-          className="px-6 py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg"
-        >
-          Logout
-        </button>
+       <div>
+        <Button text="Logout" onClick={handleLogout}/>
+       </div>
       </div>
       <div>
         <h2 className="text-2xl font-semibold mb-6 text-green-950">

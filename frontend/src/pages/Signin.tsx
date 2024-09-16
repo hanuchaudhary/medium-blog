@@ -65,7 +65,7 @@ const SignUpForm = () => {
             />
           </div>
           {error && (
-            <h1 className="text-red-600 font-semibold pb-4">{error}</h1>
+            <h1 className="text-red-600 text-center font-semibold pb-4">{error}</h1>
           )}
           <Input
             name="email"
