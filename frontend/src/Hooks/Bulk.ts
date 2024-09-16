@@ -68,7 +68,7 @@ export const useFetchBlogs = () => {
         fetchData();
     }, [filter]);
 
-    return { data, loading, error };
+    return {setFilter, data, loading, error };
 };
 
 interface Profile {
