@@ -8,7 +8,8 @@ interface Blog {
     content: string,
     author: {
         name: string
-    }
+    },
+    name: string
 }
 export const useSearchBlog = ({ id }: { id: string }) => {
     const [data, setData] = useState<Blog>();
@@ -36,35 +37,37 @@ export const useSearchBlog = ({ id }: { id: string }) => {
     return { data, loading };
 }
 
-export const useFetchBlogs = () => {
-
+export const useFetchBlogs = (filter: string = "") => {
     const [data, setData] = useState<Blog[]>([]);
-    const [loading, setLoading] = useState(true)
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const response = await axios.get(`${BACKEND_URL}/api/v1/blog/bulk`, {
+                    params: { filter },
                     headers: {
                         Authorization: localStorage.getItem("token"),
                     },
                 });
-                setLoading(false);
-                const data = response.data.blogs;
-                setData(data);
 
-            } catch (error) {
-                setLoading(true);
-                console.log(error);
+                setLoading(false);
+                console.log(response.data.blogs);
+
+                setData(response.data.blogs);
+            } catch (err) {
+                setLoading(false);
+                setError("Failed to fetch blogs");
+                console.error(err);
             }
         };
-        fetchData();
-    }, []);
 
-    return {
-        data, loading
-    }
-}
+        fetchData();
+    }, [filter]);
+
+    return { data, loading, error };
+};
 
 interface Blog {
     title: string;
@@ -106,28 +109,28 @@ export const useDelete = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<null | string>(null);
     const [isDeleted, setIsDeleted] = useState(false);
-  
+
     const deleteBlog = async (id: string) => {
-      setLoading(true);
-      try {
-        await axios.delete(`${BACKEND_URL}/api/v1/blog/delete`, {
-          headers: {
-            Authorization: localStorage.getItem("token") || "",
-          },
-          data: {
-            id, 
-          },
-        });
-        setLoading(false);
-        setIsDeleted(true);
-        console.log("Blog deleted successfully!");
-        window.location.reload();
-      } catch (err) {
-        setLoading(false);
-        setError("Failed to delete the blog.");
-        console.log(err);
-      }
+        setLoading(true);
+        try {
+            await axios.delete(`${BACKEND_URL}/api/v1/blog/delete`, {
+                headers: {
+                    Authorization: localStorage.getItem("token") || "",
+                },
+                data: {
+                    id,
+                },
+            });
+            setLoading(false);
+            setIsDeleted(true);
+            console.log("Blog deleted successfully!");
+            window.location.reload();
+        } catch (err) {
+            setLoading(false);
+            setError("Failed to delete the blog.");
+            console.log(err);
+        }
     };
-  
+
     return { deleteBlog, loading, error, isDeleted };
-  };
+};

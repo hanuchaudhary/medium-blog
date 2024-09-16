@@ -14,6 +14,7 @@ export const blogRouter = new Hono<{
     },
 }>();
 
+//middleware 
 blogRouter.use("/*", async (c, next) => {
     const authHeader = c.req.header("authorization") || "";
 
@@ -54,10 +55,22 @@ blogRouter.post("/create", async (c) => {
             title: body.title,
             content: body.content,
             authorId: authorId
+        },
+        select: {
+            author: {
+                select: {
+                    blog: true,
+                    name: true, email: true
+                }
+            },
+            title: true,
+            content: true,
+            id: true,
+            publishedAt: true
         }
     })
 
-    return c.json({ msg: "Create blog post", id: blog.id, author: authorId }
+    return c.json({ msg: "Create blog post", blog: blog }
     );
 
 });
@@ -89,34 +102,76 @@ blogRouter.put("/update", async (c) => {
     return c.json({ msg: "Update blog post", updatedTitle: updateBlog.title });
 });
 
-//to fetch all blogs--
 blogRouter.get("/bulk", async (c) => {
     const prisma = new PrismaClient({
-        datasourceUrl: c.env.DATABASE_URL,
-    }).$extends(withAccelerate())
+        datasources: {
+            db: {
+                url: c.env.DATABASE_URL,
+            },
+        },
+    }).$extends(withAccelerate());
 
-    const blogs = await prisma.blog.findMany({
-        select: {
-            id: true,
-            title: true,
-            content: true,
-            author: {
-                select: {
-                    name: true
+    try {
+        const filter = c.req.query("filter") || "";
+        console.log("Filter:", filter);
+        const allBlogs = await prisma.blog.findMany();
+        const blogs = await prisma.blog.findMany({
+            where: {
+                OR: [
+                    { title: { contains: filter, mode: "insensitive" } },
+                    // { content: { contains: filter, mode: "insensitive" } },
+                ],
+            },
+            select: {
+                id: true,
+                title: true,
+                content: true,
+                publishedAt: true,
+                author: {
+                    select: {
+                        email: true,
+                        blog: true,
+                        id: true,
+                        name: true,
+                    }
                 }
             }
-        }
-    });
-    return c.json({ blogs });
+        });
+
+        console.log("Filtered Blogs:", blogs);
+        return c.json({
+            success: true,
+            message: "Blogs Retrieved Successfully!!!",
+            blogs: blogs.map((blog) => ({
+                id: blog.id,
+                title: blog.title,
+                content: blog.content,
+                publishedAt: blog.publishedAt,
+                name : blog.author.name,
+                email : blog.author.email,
+                blogs : blog.author.blog,
+                authorId : blog.author.id,
+            })),
+        }, 200);
+    } catch (error) {
+        console.error(error);
+        return c.json({
+            success: false,
+            message: "Failed to Retrieve Blogs!!!",
+            error: error,
+        }, 500);
+    } finally {
+        await prisma.$disconnect();
+    }
 });
 
 //get single blog via id--
 blogRouter.get("/:id", async (c) => {
-    const id = c.req.param("id");
     const prisma = new PrismaClient({
         datasourceUrl: c.env.DATABASE_URL,
     }).$extends(withAccelerate())
 
+    const id = c.req.param("id");
     try {
         const getBlog = await prisma.blog.findFirst({
             where: {
@@ -146,31 +201,30 @@ blogRouter.get("/:id", async (c) => {
     }
 });
 
-blogRouter.post("/deleteblog/", async (c) => {
+//delete blog route--
+blogRouter.delete("/delete", async (c) => {
     const prisma = new PrismaClient({
         datasourceUrl: c.env.DATABASE_URL,
-    }).$extends(withAccelerate())
+    }).$extends(withAccelerate());
 
     const body = await c.req.json();
     try {
         const delBlog = await prisma.blog.delete({
-            where : {
-                id : body.id
-            }
-        })
+            where: {
+                id: body.id,
+            },
+        });
 
         c.status(200);
-        c.json({
-            message : "Blog Deleted!!",
-            deletedBlogTitle : delBlog.title,
-        })
-
+        return c.json({
+            message: "Blog Deleted!!",
+            deletedBlogTitle: delBlog.title,
+        });
     } catch (error) {
         c.status(400);
         return c.json({
             message: "Error while deleting Blog!!",
             error: error
-        })
+        });
     }
-})
-
+});
