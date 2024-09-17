@@ -3,9 +3,9 @@ import Button from "../components/Button";
 
 export default function Component() {
   return (
-    <div className="min-h-screen bg-[#f5f5f5] text-[#1a1a1a] font-mono">
-      <header className="flex items-center justify-between px-8 py-4 border-b">
-        <div className="text-2xl font-bold">Medium</div>
+    <div className="min-h-screen dark:bg-neutral-900 dark:text-white bg-[#f5f5f5] text-[#1a1a1a] font-mono">
+      <header className="flex items-center justify-between px-8 py-4 dark:border-neutral-600 border-b">
+        <div className="text-2xl font-bold">Medium.</div>
         <nav className="flex items-center gap-6">
           <Link to="#" className="text-sm hidden md:block font-medium">
             Our story
@@ -18,7 +18,7 @@ export default function Component() {
           </Link>
         </nav>
       </header>
-      <main className="flex flex-col h-full items-center justify-center flex-1 px-8 py-16 text-center">
+      <main className="flex select-none flex-col h-full items-center justify-center flex-1 px-8 py-16 text-center">
         <h1 className="md:text-6xl text-4xl font-bold leading-tight">
           Human <br /> stories & ideas
         </h1>
@@ -29,7 +29,7 @@ export default function Component() {
           <Button text="Get Started" />
         </Link>
       </main>
-      <footer className="flex fixed bottom-0 w-full justify-center px-8 py-4 border-t">
+      <footer className="flex fixed bottom-0 w-full justify-center px-8 py-4 dark:border-neutral-600  border-t">
         <nav className="grid grid-cols-4 md:grid-cols-4 lg:grid-cols-8 gap-4 text-sm">
           <Link to={"#"} className="text-muted-foreground">
             Help

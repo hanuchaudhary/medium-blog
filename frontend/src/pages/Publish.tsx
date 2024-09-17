@@ -49,13 +49,13 @@ const Publish = () => {
       <Navbar onClick={OnClickHandler} />
       <div>
         {loading ? (
-          <div className="flex items-center h-screen justify-center bg-transparent">
+          <div className="flex items-center dark:bg-neutral-900 h-screen justify-center bg-transparent">
             <Spinner />
           </div>
         ) : (
-          <div className="grid grid-cols-8 w-full font-mono p-4 md:p-20">
+          <div className="grid dark:bg-neutral-900 grid-cols-8 w-full font-mono p-4 md:p-20">
             <div className="icon select-none">
-              <PlusCircle className="md:w-16 md:h-16 lg:w-24 lg:h-24 h-5 w-5 text-neutral-300" />
+              <PlusCircle className="md:w-16 md:h-16 lg:w-24 lg:h-24 h-5 w-5 text-neutral-300 dark:text-neutral-500 " />
             </div>
             <div className="col-span-6">
               {error && (
@@ -67,7 +67,7 @@ const Publish = () => {
                   onChange={(e) =>
                     setCreateBlog({ ...createBlog, title: e.target.value })
                   }
-                  className="outline-none text-xl md:text-3xl w-full"
+                  className="outline-none dark:bg-neutral-800 rounded-lg p-2 text-white text-xl md:text-3xl w-full"
                   placeholder="Title"
                 />
               </div>
@@ -77,7 +77,7 @@ const Publish = () => {
                   onChange={(e) =>
                     setCreateBlog({ ...createBlog, content: e.target.value })
                   }
-                  className="outline-none text-sm md:text-xl w-full h-96"
+                  className="outline-none text-sm dark:bg-neutral-800 rounded-lg p-2 text-white md:text-xl w-full h-96"
                   placeholder="Tell Your Story..."
                   name="content"
                   id="content"

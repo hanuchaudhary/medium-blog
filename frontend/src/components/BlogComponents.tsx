@@ -20,7 +20,7 @@ const BlogComponents = ({
 
   return (
     <Link to={`/blog/${id}`}>
-      <div className="font-mono hover:bg-neutral-100 transition-colors rounded-md p-2 w-full py-5 md:py-8 border-b select-none">
+      <div className="font-mono hover:bg-neutral-100 dark:hover:bg-neutral-800 dark:border-neutral-600 transition-colors rounded-md p-2 w-full py-5 md:py-8 border-b select-none">
         <div className="flex items-center gap-2">
           <div className="avatar">
             <div className="md:w-10 md:h-10 h-7 w-7 select-none cursor-pointer flex items-center justify-center bg-green-500 text-sm capitalize font-semibold hover:bg-green-600 hover:scale-105 transition-transform text-white rounded-full">
@@ -36,7 +36,7 @@ const BlogComponents = ({
         <div>
           <div className="my-5 cursor-pointer">
             <h1 className="font-semibold leading-tight capitalize md:text-3xl text-lg mb-2">{title}</h1>
-            <p className="text-zinc-700 text-xs md:text-lg w-full capitalize">
+            <p className="text-zinc-700 dark:text-neutral-400 hover:dark:text-neutral-300 transition-colors text-xs md:text-lg w-full capitalize">
               {content.length < 100
                 ? content
                 : content.substring(0, 200) + "..."}

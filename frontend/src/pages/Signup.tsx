@@ -41,13 +41,14 @@ const SignUpForm = () => {
       setError(null);
       navigate("/blogs");
     } catch (error) {
-      setError("Error while Signingup : " + error);
+      console.log(error);
       setLoading(false);
+      setError("Error while Signingup : " + error);
     }
   };
 
   return (
-    <div className="flex items-center bg-neutral-100 justify-center h-screen">
+    <div className="flex items-center dark:bg-neutral-900 dark:text-white bg-neutral-100 justify-center h-screen">
       {loading ? (
         <div className="flex items-center justify-center bg-transparent">
           <Spinner />
@@ -55,7 +56,7 @@ const SignUpForm = () => {
       ) : (
         <div
           className={`relative border-dashed md:px-16 mx-8 ${
-            error ? "border-red-700" : "border-green-950"
+            error ? "border-red-700" : "border-green-950 dark:border-green-600"
           }  border-2 md:p-8 p-4 rounded-none font-mono`}
         >
           <div>
@@ -70,7 +71,7 @@ const SignUpForm = () => {
             />
           </div>
           {error && (
-            <h1 className="text-red-700 text-center font-semibold">{error}</h1>
+            <h1 className="dark:text-red-600 text-red-600 text-center font-semibold">{error}</h1>
           )}
           <Input
             name="name"

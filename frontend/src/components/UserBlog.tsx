@@ -12,20 +12,20 @@ const UserBlog = ({ id, title, content  , onClick}: UserBlogType) => {
     <div>
       <div
         id={id}
-        className="mb-6 p-4 bg-neutral-700 rounded-lg shadow cursor-pointer select-none relative"
+        className="mb-6 p-6 dark:bg-neutral-800 dark:hover:bg-neutral-700 transition-colors rounded-lg hover:bg-neutral-200  shadow cursor-pointer select-none relative"
       >
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-xl font-semibold text-neutral-200 mb-2">
+          <h3 className="text-xl font-semibold dark:text-neutral-100 text-neutral-800 mb-2">
             {title}
           </h3>
           <div onClick={onClick}>
             <CircleX />
           </div>
         </div>
-        <p className="text-neutral-400 mb-4">
+        <p className="dark:text-neutral-400 text-neutral-700 mb-4">
           {content.length < 200 ? content : content.substring(0, 150) + "..."}
         </p>
-        <p className="text-green-400 font-semibold">Likes: 10</p>
+        <p className="dark:text-green-500 text-green-700 font-semibold">Likes: 10</p>
       </div>
     </div>
   );

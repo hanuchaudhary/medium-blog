@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import DropdownMenu from "./DropdownMenu";
-import { CircleX, Search } from "lucide-react";
+import { CircleX, MoonIcon, Search, SunIcon } from "lucide-react";
 import { useProfile } from "../Hooks/Bulk";
 import SearchBlogComponent from "./SearchBlogComponent";
 import axios from "axios";
@@ -28,7 +28,7 @@ interface blogInterface {
   name: string;
 }
 
-const Navbar = ({ onClick }: any) => {
+const Navbar = ({ onClick, toggleDarkMode, darkMode }: any) => {
   const navigate = useNavigate();
   const location = useLocation();
   const path = location.pathname;
@@ -86,7 +86,7 @@ const Navbar = ({ onClick }: any) => {
     <div>
       {searchBackground && searchQuery.trim() !== "" && (
         <div className="background w-full h-full rounded-b-xl absolute bg-neutral-500 bg-opacity-45">
-          <div className="bg-neutral-50 mt-20 mx-10 rounded-md">
+          <div className="bg-neutral-50 dark:bg-neutral-700 mt-20 mx-10 rounded-md">
             {blog.map((e) => (
               <SearchBlogComponent
                 key={e.id}
@@ -99,7 +99,7 @@ const Navbar = ({ onClick }: any) => {
         </div>
       )}
 
-      <nav className="relative flex items-center w-full justify-between font-mono bg-white py-3 px-4 md:px-8 border-b">
+      <nav className="relative flex dark:bg-neutral-900 dark:text-white items-center w-full justify-between font-mono bg-white py-3 px-4 md:px-8 border-b dark:border-neutral-600">
         {menu && (
           <div
             className="absolute top-14 transition-transform z-10 right-10 md:top-14 md:right-14"
@@ -111,7 +111,7 @@ const Navbar = ({ onClick }: any) => {
         <div>
           <Link
             to={"/blogs"}
-            className="text-2xl md:block hidden font-bold text-gray-800"
+            className="text-2xl md:block hidden font-bold dark:text-white text-gray-800"
           >
             Medium.
           </Link>
@@ -131,7 +131,7 @@ const Navbar = ({ onClick }: any) => {
             name="search"
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search"
-            className="w-full py-2 px-4 bg-gray-100 rounded-full focus:outline-none"
+            className="w-full py-2 px-4 bg-gray-100 dark:bg-neutral-700  rounded-full focus:outline-none"
           />
         </div>
 
@@ -155,7 +155,7 @@ const Navbar = ({ onClick }: any) => {
             )}
           </div>
 
-          {(path === "/publish") ? (
+          {path === "/publish" ? (
             <div className="flex items-center justify-center gap-2 md:gap-4">
               <Link to={"/blogs"}>
                 <button className="md:py-2 md:px-4 py-1 px-2 bg-red-500 text-red-900 font-semibold rounded-full hover:bg-red-600">
@@ -171,18 +171,24 @@ const Navbar = ({ onClick }: any) => {
             </div>
           ) : (
             <Link to={"/publish"}>
-              <button className={`py-2 px-4 text-green-900 font-semibold bg-green-100 rounded-full hover:bg-green-200 ${search ? "hidden" : "block"}`}>
+              <button
+                className={`py-2 px-4 text-green-900 font-semibold bg-green-100 rounded-full hover:bg-green-200 ${
+                  search ? "hidden" : "block"
+                }`}
+              >
                 Write
               </button>
             </Link>
           )}
 
-          <button className="p-2 md:block hidden bg-gray-100 rounded-full hover:bg-gray-200">
-            🔔
-          </button>
+          <div onClick={toggleDarkMode}>{darkMode ? <MoonIcon/> : <SunIcon />}</div>
 
           <div onClick={handleMenu}>
-            <div className={`w-10 h-10 select-none cursor-pointer flex items-center justify-center bg-green-500 font-semibold hover:bg-green-600 hover:scale-105 transition-transform text-white rounded-full ${search ? "hidden" : "block"}`}>
+            <div
+              className={`w-10 h-10 select-none cursor-pointer flex items-center justify-center bg-green-500 font-semibold hover:bg-green-600 hover:scale-105 transition-transform text-white rounded-full ${
+                search ? "hidden" : "block"
+              }`}
+            >
               {logoName.length > 1
                 ? `${logoName[0][0]}${logoName[1][0]}`
                 : logoName[0]

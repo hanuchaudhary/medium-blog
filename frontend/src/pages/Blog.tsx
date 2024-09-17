@@ -19,9 +19,9 @@ const Blog = () => {
 
   if (loading) {
     return (
-      <div>
+      <div className="dark:bg-neutral-900 h-screen">
         <Navbar />
-        <div className="lg:px-52 md:px-24 px-4 my-10">
+        <div className="lg:px-52 md:px-24 px-4 my-10 text-white">
           <Skeleton />
         </div>
       </div>
@@ -29,9 +29,9 @@ const Blog = () => {
   }
 
   return (
-    <div>
+    <div className="dark:bg-neutral-900">
       <Navbar />
-      <div className="lg:px-52 md:px-24 px-4 my-10">
+      <div className="lg:px-52 md:px-24 px-4 h-screen my-10 ">
         <FullBlog
           publishedAt={formattedDate}
           name={data?.author.name || "Anoymonous"}

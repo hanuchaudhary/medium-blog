@@ -11,7 +11,7 @@ const AuthBottom = ({ label, title, to }: labelAuth) => {
     <div className="md:my-5 my-3">
       <h1 className="text-center">
         {title}{" "}
-        <Link className="hover:underline text-green-800 font-semibold" to={to}>
+        <Link className="hover:underline dark:text-green-500 text-green-800 font-semibold" to={to}>
           {label}
         </Link>
       </h1>

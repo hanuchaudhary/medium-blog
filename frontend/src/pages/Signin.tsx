@@ -42,14 +42,14 @@ const SignUpForm = () => {
   };
 
   return (
-    <div className="flex items-center bg-zinc-100 justify-center h-screen">
+    <div className="flex items-center dark:bg-neutral-900 dark:text-white bg-zinc-100 justify-center h-screen">
       {loading ? (
         <div className="flex items-center justify-center bg-transparent">
           <Spinner />
         </div>
       ) : (
         <div
-          className={`relative border-dashed md:px-16 mx-5 ${
+          className={`relative dark:border-green-600 border-dashed md:px-16 mx-5 ${
             error ? "border-red-700" : "border-green-950"
           }  border-2 md:p-8 p-4 rounded-none font-mono`}
         >
