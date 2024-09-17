@@ -2,7 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import Skeleton from "../components/Skeleton";
 import Navbar from "../components/Navbar";
 import { useDelete, useProfile } from "../Hooks/Bulk";
-import { CircleX, PackageCheckIcon } from "lucide-react";
+import { CircleX } from "lucide-react";
 import UserBlog from "../components/UserBlog";
 import Button from "../components/Button";
 
