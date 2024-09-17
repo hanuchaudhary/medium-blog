@@ -9,7 +9,7 @@ import Profile from "./pages/Profile";
 
 function App() {
   return (
-    <div className="dark">
+    <div className="dark bg-neutral-900">
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Landing />} />

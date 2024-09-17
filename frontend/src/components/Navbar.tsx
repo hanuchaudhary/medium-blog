@@ -117,7 +117,7 @@ const Navbar = ({ onClick, toggleDarkMode, darkMode }: any) => {
           </Link>
           <Link
             to={"/blogs"}
-            className="text-2xl block md:hidden font-bold text-gray-800"
+            className="text-2xl block md:hidden font-bold dark:text-white text-gray-800"
           >
             M.
           </Link>

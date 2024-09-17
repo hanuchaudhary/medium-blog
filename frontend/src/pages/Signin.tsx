@@ -37,6 +37,7 @@ const SignUpForm = () => {
       setError(null);
       navigate("/blogs");
     } catch (error) {
+      setLoading(false);
       setError("Error while Login!! : " + error);
     }
   };
