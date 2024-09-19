@@ -1,16 +1,16 @@
 import { useState } from "react";
 import Navbar from "../components/Navbar";
 import Spinner from "../components/Spinner";
-import { CreateBlogType } from "@hanuchaudhary/medium-app";
 import axios from "axios";
 import { BACKEND_URL } from "../config";
 import { useNavigate } from "react-router-dom";
-import { PlusCircle } from "lucide-react";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css"; // Import Quill styles
 
 const Publish = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-  const [createBlog, setCreateBlog] = useState<CreateBlogType>({
+  const [createBlog, setCreateBlog] = useState({
     title: "",
     content: "",
   });
@@ -21,7 +21,7 @@ const Publish = () => {
       setError("Title and content cannot be empty.");
       return;
     }
-    
+
     try {
       setLoading(true);
       setError(null);
@@ -30,7 +30,7 @@ const Publish = () => {
         createBlog,
         {
           headers: {
-            Authorization : localStorage.getItem("token")
+            Authorization: localStorage.getItem("token"),
           },
         }
       );
@@ -53,35 +53,26 @@ const Publish = () => {
             <Spinner />
           </div>
         ) : (
-          <div className="grid dark:bg-neutral-900 grid-cols-8 w-full font-mono p-4 md:p-20">
-            <div className="icon select-none">
-              <PlusCircle className="md:w-16 md:h-16 lg:w-24 lg:h-24 h-5 w-5 text-neutral-300 dark:text-neutral-500 " />
-            </div>
+          <div className="grid dark:bg-neutral-900 grid-cols-8 w-full font-mono md:p-20">
             <div className="col-span-6">
-              {error && (
-                <div className="text-red-500 mb-4">{error}</div>
-              )}
+              {error && <div className="text-red-500 mb-4">{error}</div>}
               <div className="title pb-4">
-                <textarea
+                <input
+                  type="text"
                   value={createBlog.title}
-                  onChange={(e) =>
-                    setCreateBlog({ ...createBlog, title: e.target.value })
-                  }
+                  onChange={(e) => setCreateBlog({ ...createBlog, title: e.target.value })}
                   className="outline-none dark:bg-neutral-800 rounded-lg p-2 text-white text-xl md:text-3xl w-full"
                   placeholder="Title"
                 />
               </div>
-              <div className="content">
-                <textarea
+              <div className="content w-screen md:w-full mx-2 text-white">
+                <ReactQuill
+                  theme="snow"
                   value={createBlog.content}
-                  onChange={(e) =>
-                    setCreateBlog({ ...createBlog, content: e.target.value })
-                  }
-                  className="outline-none text-sm dark:bg-neutral-800 rounded-lg p-2 text-white md:text-xl w-full h-96"
-                  placeholder="Tell Your Story..."
-                  name="content"
-                  id="content"
-                ></textarea>
+                  onChange={(content) => setCreateBlog({ ...createBlog, content })}
+                  className="dark:bg-neutral-800 text-xl rounded-lg text-white w-full h-96"
+                  placeholder="Content here...."
+                />
               </div>
             </div>
           </div>

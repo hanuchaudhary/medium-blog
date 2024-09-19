@@ -1,3 +1,4 @@
+import DOMPurify from "dompurify";
 import { Link } from "react-router-dom";
 
 interface blogCardProps {
@@ -16,6 +17,7 @@ const BlogComponents = ({
   published,
   id,
 }: blogCardProps) => {
+  const editedContent = content.length < 100 ? content : content.substring(0, 200) + "...";
   const logoName = name?.split(" ") || [];
 
   return (
@@ -31,16 +33,21 @@ const BlogComponents = ({
                 : ""}
             </div>
           </div>
-          <h1 className="font-semibold capitalize text-lg md:text-2xl">{name}</h1>
+          <h1 className="font-semibold capitalize text-lg md:text-2xl">
+            {name}
+          </h1>
         </div>
         <div>
           <div className="my-5 cursor-pointer">
-            <h1 className="font-semibold leading-tight capitalize md:text-3xl text-lg mb-2">{title}</h1>
-            <p className="text-zinc-700 dark:text-neutral-400 hover:dark:text-neutral-300 transition-colors text-xs md:text-lg w-full capitalize">
-              {content.length < 100
-                ? content
-                : content.substring(0, 200) + "..."}
-            </p>
+            <h1 className="font-semibold leading-tight capitalize md:text-3xl text-lg mb-2">
+              {title}
+            </h1>
+            <p
+              dangerouslySetInnerHTML={{
+                __html: DOMPurify.sanitize(editedContent),
+              }}
+              className="text-zinc-700 dark:text-neutral-400 hover:dark:text-neutral-300 transition-colors text-xs md:text-lg w-full capitalize"
+            ></p>
           </div>
         </div>
         <div className="flex items-center gap-4">
@@ -48,7 +55,9 @@ const BlogComponents = ({
             <div className="icon">⚡</div>
             <h1 className="font-semibold text-sm">{published} | </h1>
           </div>
-          <p className="text-sm">{Math.ceil(content.length / 100) + " Min Read"}</p>
+          <p className="text-sm">
+            {Math.ceil(content.length / 800) + " Min Read"}
+          </p>
         </div>
       </div>
     </Link>

@@ -27,7 +27,6 @@ export const Blogs = () => {
           Blogs
         </h1>
         {data.map((item, idx) => {
-          // @ts-ignore
           const date = new Date(item.publishedAt);
           const formattedDate = date.toLocaleDateString("en-GB", {
             day: "2-digit",
@@ -43,7 +42,7 @@ export const Blogs = () => {
               title={item.title}
               content={item.content}
               name={item.name}
-              published={formattedDate} // Pass formatted date here
+              published={formattedDate} 
             />
           );
         })}
