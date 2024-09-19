@@ -5,12 +5,19 @@ interface UserBlogType {
   id: string;
   title: string;
   content: string;
-  onClick : () => void  
+  publishedAt: string;
+  onClick: () => void;
 }
 
-const UserBlog = ({ id, title, content  , onClick}: UserBlogType) => {
-
-  const editedContent = content.length < 100 ? content : content.substring(0, 200) + "...";
+const UserBlog = ({
+  id,
+  title,
+  content,
+  publishedAt,
+  onClick,
+}: UserBlogType) => {
+  const editedContent =
+    content.length < 100 ? content : content.substring(0, 200) + "...";
 
   return (
     <div>
@@ -26,12 +33,19 @@ const UserBlog = ({ id, title, content  , onClick}: UserBlogType) => {
             <CircleX />
           </div>
         </div>
-        <p dangerouslySetInnerHTML={{
-              __html: DOMPurify.sanitize(editedContent),
-            }} className="dark:text-neutral-400 text-neutral-700 mb-4">
-          
-        </p>
-        <p className="dark:text-green-500 text-green-700 font-semibold">Likes: 10</p>
+        <p
+          dangerouslySetInnerHTML={{
+            __html: DOMPurify.sanitize(editedContent),
+          }}
+          className="dark:text-neutral-400 text-neutral-700 mb-4"
+        ></p>
+
+        <div className="flex items-center gap-5">
+          <p className="dark:text-green-500 text-green-700 font-semibold">
+            Likes: 10
+          </p>
+          <p>{publishedAt}</p>
+        </div>
       </div>
     </div>
   );

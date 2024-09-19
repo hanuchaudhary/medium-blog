@@ -13,7 +13,7 @@ interface fullBlogProps {
   };
 }
 
-const FullBlog = ({ title, content, name ,publishedAt }: fullBlogProps) => {
+const FullBlog = ({ title, content, name, publishedAt }: fullBlogProps) => {
   const logoName = name?.split(" ") || [];
 
   return (
@@ -35,12 +35,17 @@ const FullBlog = ({ title, content, name ,publishedAt }: fullBlogProps) => {
                   {Math.ceil(content.length / 800) + " Minutes Read"}
                 </h1>
                 <div className="font-semibold md:text-md text-xs">|</div>
-                <p className="published font-semibold md:text-md text-xs text-neutral-500 dark:text-neutral-400">{publishedAt}</p>
+                <p className="published font-semibold md:text-md text-xs text-neutral-500 dark:text-neutral-400">
+                  {publishedAt}
+                </p>
               </div>
             </div>
           </div>
-          <Link to={"/blogs"} className="text-neutral-500 flex items-center justify-center dark:text-neutral-400">
-            <CircleX className="lg:h-10 lg:w-10 md:w-8 md:h-8 h-5 w-5 hover:text-neutral-300 transition-colors"  />
+          <Link
+            to={"/blogs"}
+            className="text-neutral-500 flex items-center justify-center dark:text-neutral-400"
+          >
+            <CircleX className="lg:h-10 lg:w-10 md:w-8 md:h-8 h-5 w-5 hover:text-neutral-300 transition-colors" />
           </Link>
         </div>
         <div className="content font-mono">
@@ -48,10 +53,11 @@ const FullBlog = ({ title, content, name ,publishedAt }: fullBlogProps) => {
             {title}
           </h1>
           <p
-          dangerouslySetInnerHTML={{
-            __html: DOMPurify.sanitize(content), // Sanitize the HTML content
-          }}
-          className="md:text-xl text-md capitalize dark:text-neutral-200"></p>
+            dangerouslySetInnerHTML={{
+              __html: DOMPurify.sanitize(content),
+            }}
+            className="md:text-xl text-md capitalize dark:text-neutral-200"
+          ></p>
         </div>
       </div>
     </div>

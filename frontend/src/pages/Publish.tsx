@@ -53,23 +53,28 @@ const Publish = () => {
             <Spinner />
           </div>
         ) : (
-          <div className="grid dark:bg-neutral-900 grid-cols-8 w-full font-mono md:p-20">
-            <div className="col-span-6">
-              {error && <div className="text-red-500 mb-4">{error}</div>}
-              <div className="title pb-4">
-                <input
-                  type="text"
+          <div className="dark:bg-neutral-900 py-10 px-4 flex items-center justify-center font-mono ">
+            <div>
+              {error && (
+                <div className="text-red-500 w-screen mb-4">{error}</div>
+              )}
+              <div className="title mb-4">
+                <textarea
                   value={createBlog.title}
-                  onChange={(e) => setCreateBlog({ ...createBlog, title: e.target.value })}
-                  className="outline-none dark:bg-neutral-800 rounded-lg p-2 text-white text-xl md:text-3xl w-full"
+                  onChange={(e) =>
+                    setCreateBlog({ ...createBlog, title: e.target.value })
+                  }
+                  className="outline-none md:w-[70vw] dark:bg-neutral-800 rounded-lg p-2 text-white text-lg md:text-2xl w-full"
                   placeholder="Title"
                 />
               </div>
-              <div className="content w-screen md:w-full mx-2 text-white">
+              <div className="content md:w-full text-white">
                 <ReactQuill
                   theme="snow"
                   value={createBlog.content}
-                  onChange={(content) => setCreateBlog({ ...createBlog, content })}
+                  onChange={(content) =>
+                    setCreateBlog({ ...createBlog, content })
+                  }
                   className="dark:bg-neutral-800 text-xl rounded-lg text-white w-full h-96"
                   placeholder="Content here...."
                 />

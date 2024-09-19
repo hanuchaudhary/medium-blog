@@ -61,15 +61,24 @@ const Profile = () => {
           <h2 className="text-2xl font-semibold mb-6 dark:text-green-500 text-green-950">
             -- My Blogs --
           </h2>
-          {data?.blog.map((e) => (
-            <UserBlog
-              key={e.id}
-              title={e.title}
-              content={e.content}
-              id={e.id}
-              onClick={() => handleDelete(e.id)}
-            />
-          ))}
+          {data?.blog.map((e) => {
+            const date = new Date(e.publishedAt);
+            const formattedDate = date.toLocaleDateString("en-GB", {
+              day: "2-digit",
+              month: "long",
+              year: "numeric",
+            });
+            return (
+              <UserBlog
+                key={e.id}
+                title={e.title}
+                content={e.content}
+                publishedAt={formattedDate}
+                id={e.id}
+                onClick={() => handleDelete(e.id)}
+              />
+            );
+          })}
           <p className="text-neutral-400">No more blogs to display.</p>
         </div>
       </div>
