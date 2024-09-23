@@ -114,7 +114,7 @@ blogRouter.get("/bulk", async (c) => {
     try {
         const filter = c.req.query("filter") || "";
         console.log("Filter:", filter);
-        const allBlogs = await prisma.blog.findMany();
+        // const allBlogs = await prisma.blog.findMany();
         const blogs = await prisma.blog.findMany({
             where: {
                 OR: [

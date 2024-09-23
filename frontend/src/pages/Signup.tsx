@@ -24,7 +24,7 @@ const SignUpForm = () => {
   const handleSubmit = async () => {
     if (!signupInputs.email || !signupInputs.name || !signupInputs.password) {
       setError(
-        "Please fill in all required fields: Email, Full Name, and Password."
+        "Please fill in all required fields"
       );
       return;
     }

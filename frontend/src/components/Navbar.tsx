@@ -100,6 +100,7 @@ const Navbar = ({ onClick, toggleDarkMode, darkMode }: any) => {
       )}
 
       <nav className="relative flex dark:bg-neutral-900 dark:text-white items-center w-full justify-between font-mono bg-white py-3 px-4 md:px-8 border-b dark:border-neutral-600">
+        <div>
         {menu && (
           <div
             className="absolute top-14 transition-transform z-10 right-10 md:top-14 md:right-14"
@@ -108,6 +109,7 @@ const Navbar = ({ onClick, toggleDarkMode, darkMode }: any) => {
             <DropdownMenu handleLogout={handleLogout} />
           </div>
         )}
+        </div>
         <div>
           <Link
             to={"/blogs"}
