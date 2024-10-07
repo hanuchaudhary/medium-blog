@@ -29,9 +29,9 @@ const Blog = () => {
   }
 
   return (
-    <div className="dark:bg-neutral-900">
+    <div>
       <Navbar />
-      <div className="lg:px-52 md:px-24 px-4 h-screen my-10 ">
+      <div className="lg:px-52 md:px-24 px-2 py-5  ">
         <FullBlog
           publishedAt={formattedDate}
           name={data?.author.name || "Anoymonous"}

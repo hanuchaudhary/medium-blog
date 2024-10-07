@@ -1,30 +1,32 @@
-import { useState } from "react";
-import Navbar from "../components/Navbar";
-import Spinner from "../components/Spinner";
-import axios from "axios";
-import { BACKEND_URL } from "../config";
-import { useNavigate } from "react-router-dom";
-import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css"; // Import Quill styles
+import { useState } from "react"
+import { useNavigate } from "react-router-dom"
+import axios from "axios"
+import MarkdownEditor from "@uiw/react-markdown-editor"
+import Navbar from "../components/Navbar"
+import Spinner from "../components/Spinner"
+import { BACKEND_URL } from "../config"
 
 const Publish = () => {
-  const navigate = useNavigate();
-  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate()
+  const mdStr = `# Blog Content here`
+  const [loading, setLoading] = useState(false)
   const [createBlog, setCreateBlog] = useState({
     title: "",
     content: "",
-  });
-  const [error, setError] = useState<string | null>(null);
+    shortDescription: "",
+  })
+  const [error, setError] = useState<string | null>(null)
 
   const OnClickHandler = async () => {
+    console.log(createBlog)
     if (!createBlog.title || !createBlog.content) {
-      setError("Title and content cannot be empty.");
-      return;
+      setError("Title and content cannot be empty.")
+      return
     }
 
     try {
-      setLoading(true);
-      setError(null);
+      setLoading(true)
+      setError(null)
       const response = await axios.post(
         `${BACKEND_URL}/api/v1/blog/create`,
         createBlog,
@@ -33,50 +35,63 @@ const Publish = () => {
             Authorization: localStorage.getItem("token"),
           },
         }
-      );
-      console.log(response.data.blog.id);
-      navigate("/blog/" + response.data.blog.id);
+      )
+      console.log(response.data.blog.id)
+      navigate("/blog/" + response.data.blog.id)
     } catch (error) {
-      setError("Error creating blog. Please try again.");
-      console.error("Error creating blog:", error);
+      setError("Error creating blog. Please try again.")
+      console.error("Error creating blog:", error)
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
 
   return (
-    <div className="w-full">
-      <Navbar onClick={OnClickHandler} />
-      <div>
+    <div className="min-h-screen bg-white dark:bg-neutral-900">
+      <Navbar onPublish={OnClickHandler} />
+      <div className="container mx-auto px-4 py-8">
         {loading ? (
-          <div className="flex items-center dark:bg-neutral-900 h-screen justify-center bg-transparent">
+          <div className="flex items-center justify-center h-[calc(100vh-64px)]">
             <Spinner />
           </div>
         ) : (
-          <div className="dark:bg-neutral-900 py-10 px-4 flex items-center justify-center font-mono ">
-            <div>
-              {error && (
-                <div className="text-red-500 w-screen mb-4">{error}</div>
-              )}
-              <div className="title mb-4">
-                <textarea
-                  value={createBlog.title}
-                  onChange={(e) =>
-                    setCreateBlog({ ...createBlog, title: e.target.value })
-                  }
-                  className="outline-none md:w-[70vw] dark:bg-neutral-800 rounded-lg p-2 text-white text-lg md:text-2xl w-full"
-                  placeholder="Title"
-                />
+          <div className="max-w-4xl mx-auto">
+            {error && (
+              <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
+                <span className="block sm:inline">{error}</span>
               </div>
-              <div className="content md:w-full text-white">
-                <ReactQuill
-                  theme="snow"
-                  value={createBlog.content}
-                  onChange={(content) =>
-                    setCreateBlog({ ...createBlog, content })
+            )}
+            <div className="space-y-4">
+              <textarea
+                className="w-full px-4 py-2 text-md md:text-2xl text-neutral-900 dark:text-white bg-neutral-100 dark:bg-neutral-800 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+                placeholder="Blog Title"
+                value={createBlog.title}
+                onChange={(e) =>
+                  setCreateBlog({ ...createBlog, title: e.target.value })
+                }
+              />
+              <textarea
+                value={createBlog.shortDescription}
+                onChange={(e) =>
+                  setCreateBlog({
+                    ...createBlog,
+                    shortDescription: e.target.value,
+                  })
+                }
+                className="w-full px-4 py-2 text-md md:text-xl text-neutral-900 dark:text-white bg-neutral-100 dark:bg-neutral-800 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 resize-none"
+                placeholder="Short Description"
+                rows={5}
+              />
+              <div className="w-full text-neutral-900 dark:text-white">
+                <MarkdownEditor
+                style={{backgroundColor : "#262626" , borderRadius : "1vw"}}
+                  value={createBlog.content || mdStr}
+                  onChange={(value) =>
+                    setCreateBlog({ ...createBlog, content: value })
                   }
-                  className="dark:bg-neutral-800 text-xl rounded-lg text-white w-full h-96"
-                  placeholder="Content here...."
+                  className="h-[60vh] overflow-hidden rounded-lg"
+                  // toolbarHeight={40}
+                  previewWidth="50%"
                 />
               </div>
             </div>
@@ -84,7 +99,7 @@ const Publish = () => {
         )}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Publish;
+export default Publish

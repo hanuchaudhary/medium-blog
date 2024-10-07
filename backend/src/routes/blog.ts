@@ -54,6 +54,7 @@ blogRouter.post("/create", async (c) => {
         data: {
             title: body.title,
             content: body.content,
+            shortDescription: body.shortDescription,
             authorId: authorId
         },
         select: {
@@ -65,6 +66,7 @@ blogRouter.post("/create", async (c) => {
             },
             title: true,
             content: true,
+            shortDescription: true,
             id: true,
             publishedAt: true
         }
@@ -125,6 +127,7 @@ blogRouter.get("/bulk", async (c) => {
                 id: true,
                 title: true,
                 content: true,
+                shortDescription: true,
                 publishedAt: true,
                 author: {
                     select: {
@@ -135,8 +138,8 @@ blogRouter.get("/bulk", async (c) => {
                     }
                 }
             },
-            orderBy:{
-                publishedAt : "desc"
+            orderBy: {
+                publishedAt: "desc"
             }
         });
 
@@ -144,16 +147,7 @@ blogRouter.get("/bulk", async (c) => {
         return c.json({
             success: true,
             message: "Blogs Retrieved Successfully!!!",
-            blogs: blogs.map((blog) => ({
-                id: blog.id,
-                title: blog.title,
-                content: blog.content,
-                publishedAt: blog.publishedAt,
-                name : blog.author.name,
-                email : blog.author.email,
-                blogs : blog.author.blog,
-                authorId : blog.author.id,
-            })),
+            blogs
         }, 200);
     } catch (error) {
         console.error(error);
@@ -183,7 +177,7 @@ blogRouter.get("/:id", async (c) => {
                 id: true,
                 title: true,
                 content: true,
-                publishedAt : true,
+                publishedAt: true,
                 author: {
                     select: {
                         name: true
@@ -231,3 +225,31 @@ blogRouter.delete("/delete", async (c) => {
         });
     }
 });
+
+// blogRouter.delete("/deletemany", async (c) => {
+//     const prisma = new PrismaClient({
+//         datasourceUrl: c.env.DATABASE_URL,
+//     }).$extends(withAccelerate());
+
+//     try {
+//         await prisma.blog.deleteMany({
+//             where: {
+//                 author: {
+//                     email: { contains: "@" }
+//                 }
+//             }
+//         });
+
+//         c.status(200);
+//         return c.json({
+//             message: "Blog Deleted!!"
+//         });
+//     } catch (error) {
+//         c.status(400);
+//         return c.json({
+//             message: "Error while deleting Blog!!",
+//             error: error
+//         });
+//     }
+// });
+

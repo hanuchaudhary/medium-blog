@@ -1,8 +1,8 @@
 import { CircleX } from "lucide-react";
 import { Link } from "react-router-dom";
-import DOMPurify from "dompurify"; // Import after installing
+import MarkdownEditor from "@uiw/react-markdown-editor";
 
-interface fullBlogProps {
+interface FullBlogProps {
   id?: string;
   title: string;
   content: string;
@@ -13,52 +13,49 @@ interface fullBlogProps {
   };
 }
 
-const FullBlog = ({ title, content, name, publishedAt }: fullBlogProps) => {
+const FullBlog = ({ title, content, name, publishedAt }: FullBlogProps) => {
   const logoName = name?.split(" ") || [];
 
   return (
-    <div className="">
-      <div className="w-full ">
-        <div className="flex justify-between gap-2 dark:bg-neutral-700 text-white font-mono md:bg-none bg-neutral-100 p-4 rounded-md">
-          <div className="flex items-center ">
-            <div className="lg:w-14 lg:h-14 md:w-10 md:h-10 w-8 h-8 text-md lg:text-2xl capitalize select-none cursor-pointer flex items-center justify-center bg-green-500 font-semibold hover:bg-green-600 hover:scale-105 mr-3 shadow-sm text-gray-100 transition-transform rounded-full">
-              {logoName.length > 1
-                ? `${logoName[0][0]}${logoName[1][0]}`
-                : logoName[0]
-                ? logoName[0][0]
-                : ""}
+    <div className="bg-white dark:bg-neutral-900 min-h-screen rounded-2xl">
+      <div className="max-w-4xl mx-auto px-2 md:p-0">
+        <div className="flex justify-between items-center bg-neutral-100 dark:bg-neutral-800 p-4 md:p-6 rounded-lg shadow-md mb-8">
+          <div className="flex items-center space-x-4">
+            <div className="w-10 h-10 md:w-14 md:h-14 lg:w-16 lg:h-16 flex items-center justify-center bg-green-500 hover:bg-green-600 text-white font-semibold rounded-full transition-all duration-200 shadow-lg">
+              <span className="text-lg md:text-xl lg:text-2xl">
+                {logoName.length > 1
+                  ? `${logoName[0][0]}${logoName[1][0]}`
+                  : logoName[0]
+                  ? logoName[0][0]
+                  : ""}
+              </span>
             </div>
-            <div className="">
-              <h1 className="font-semibold md:text-xl capitalize">{name}</h1>
-              <div className="flex md:gap-3 gap-1">
-                <h1 className="font-semibold md:text-md text-xs dark:text-neutral-400 text-neutral-500">
-                  {Math.ceil(content.length / 800) + " Minutes Read"}
-                </h1>
-                <div className="font-semibold md:text-md text-xs">|</div>
-                <p className="published font-semibold md:text-md text-xs text-neutral-500 dark:text-neutral-400">
-                  {publishedAt}
-                </p>
+            <div>
+              <h2 className="font-semibold text-lg md:text-xl text-neutral-800 dark:text-neutral-200 capitalize">
+                {name}
+              </h2>
+              <div className="flex items-center space-x-2 text-sm text-neutral-600 dark:text-neutral-400">
+                <span>{Math.ceil(content.length / 800) + " min read"}</span>
+                <span>•</span>
+                <span>{publishedAt}</span>
               </div>
             </div>
           </div>
           <Link
-            to={"/blogs"}
-            className="text-neutral-500 flex items-center justify-center dark:text-neutral-400"
+            to="/blogs"
+            className="text-neutral-500 hover:text-neutral-700 dark:text-neutral-400 dark:hover:text-neutral-200 transition-colors duration-200"
           >
-            <CircleX className="lg:h-10 lg:w-10 md:w-8 md:h-8 h-5 w-5 hover:text-neutral-300 transition-colors" />
+            <CircleX className="w-6 h-6 md:w-8 md:h-8" />
           </Link>
         </div>
-        <div className="content font-mono">
-          <h1 className="font-semibold dark:text-white lg:text-5xl md:text-3xl text-2xl  my-7 capitalize">
+        <article className="prose prose-lg dark:prose-invert max-w-none">
+          <h1 className="text-xl md:text-3xl lg:text-4xl font-bold mb-6 text-neutral-900 dark:text-neutral-100">
             {title}
           </h1>
-          <p
-            dangerouslySetInnerHTML={{
-              __html: DOMPurify.sanitize(content),
-            }}
-            className="md:text-xl text-md capitalize dark:text-neutral-200"
-          ></p>
-        </div>
+          <div className="text-neutral-800 dark:text-neutral-200 ">
+            <MarkdownEditor.Markdown style={{backgroundColor : "#262626", padding : "20px 10px" , borderRadius : "1vw"}} source={content} />
+          </div>
+        </article>
       </div>
     </div>
   );

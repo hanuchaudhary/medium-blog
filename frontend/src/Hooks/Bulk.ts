@@ -6,6 +6,7 @@ interface Blog {
     id: string;
     title: string;
     content: string;
+    shortDescription : string;
     publishedAt: string;
     author: {
         name: string
@@ -50,13 +51,13 @@ export const useFetchBlogs = () => {
         const fetchData = async () => {
             try {
                 const response = await axios.get(`${BACKEND_URL}/api/v1/blog/bulk?filter=${filter}`, {
-                    // params: { filter },
                     headers: {
                         Authorization: localStorage.getItem("token"),
                     },
                 });
                 setLoading(false);
                 setData(response.data.blogs);
+
 
             } catch (err) {
                 setLoading(false);

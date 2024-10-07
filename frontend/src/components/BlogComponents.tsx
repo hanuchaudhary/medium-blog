@@ -1,13 +1,13 @@
-import DOMPurify from "dompurify";
-import { Link } from "react-router-dom";
+import { Link } from "react-router-dom"
 
-interface blogCardProps {
-  to: string;
-  title: string;
-  content: string;
-  name: string;
-  published: string;
-  id: string;
+interface BlogCardProps {
+  to: string
+  title: string
+  content: string
+  name: string
+  shortDescription: string
+  published: string
+  id: string
 }
 
 const BlogComponents = ({
@@ -15,17 +15,21 @@ const BlogComponents = ({
   content,
   name,
   published,
+  shortDescription,
   id,
-}: blogCardProps) => {
-  const editedContent = content.length < 100 ? content : content.substring(0, 200) + "...";
-  const logoName = name?.split(" ") || [];
+}: BlogCardProps) => {
+  const editedContent =
+    shortDescription.length < 100
+      ? shortDescription
+      : shortDescription.substring(0, 200) + "..."
+  const logoName = name?.split(" ") || []
 
   return (
-    <Link to={`/blog/${id}`}>
-      <div className="font-mono hover:bg-neutral-100 dark:hover:bg-neutral-800 dark:border-neutral-600 transition-colors rounded-md p-2 w-full py-5 md:py-8 border-b select-none">
-        <div className="flex items-center gap-2">
-          <div className="avatar">
-            <div className="md:w-10 md:h-10 h-7 w-7 select-none cursor-pointer flex items-center justify-center bg-green-500 text-sm capitalize font-semibold hover:bg-green-600 hover:scale-105 transition-transform text-white rounded-full">
+    <Link to={`/blog/${id}`} className="block ">
+      <article className="font-mono hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors rounded-lg md:p-6 p-3 mb-6 border border-neutral-200 dark:border-neutral-700">
+        <header className="flex items-center space-x-4 mb-4">
+          <div className="flex-shrink-0">
+            <div className="w-12 h-12 flex items-center justify-center bg-green-500 hover:bg-green-600 transition-colors text-white rounded-full font-semibold text-lg capitalize">
               {logoName.length > 1
                 ? `${logoName[0][0]}${logoName[1][0]}`
                 : logoName[0]
@@ -33,35 +37,26 @@ const BlogComponents = ({
                 : ""}
             </div>
           </div>
-          <h1 className="font-semibold capitalize text-lg md:text-2xl">
+          <h2 className="font-semibold capitalize text-xl text-neutral-900 dark:text-neutral-100">
             {name}
-          </h1>
-        </div>
-        <div>
-          <div className="my-5 cursor-pointer">
-            <h1 className="font-semibold leading-tight capitalize md:text-3xl text-lg mb-2">
-              {title}
-            </h1>
-            <p
-              dangerouslySetInnerHTML={{
-                __html: DOMPurify.sanitize(editedContent),
-              }}
-              className="text-zinc-700 dark:text-neutral-400 hover:dark:text-neutral-300 transition-colors text-xs md:text-lg w-full capitalize"
-            ></p>
-          </div>
-        </div>
-        <div className="flex items-center gap-4">
-          <div className="date flex">
-            <div className="icon">⚡</div>
-            <h1 className="font-semibold text-sm">{published} | </h1>
-          </div>
-          <p className="text-sm">
-            {Math.ceil(content.length / 800) + " Min Read"}
+          </h2>
+        </header>
+        <div className="mb-4">
+          <h3 className="font-bold text-md md:text-2xl mb-2 text-neutral-800 dark:text-neutral-200 leading-tight">
+            {title}
+          </h3>
+          <p className="text-neutral-600 dark:text-neutral-400 text-xs md:text-base line-clamp-3">
+            {editedContent}
           </p>
         </div>
-      </div>
+        <footer className="flex items-center text-sm text-neutral-500 dark:text-neutral-400">
+          <span className="mr-3">⚡ {published}</span>
+          <span>•</span>
+          <span className="ml-3">{Math.ceil(content.length / 800)} min read</span>
+        </footer>
+      </article>
     </Link>
-  );
-};
+  )
+}
 
-export default BlogComponents;
+export default BlogComponents

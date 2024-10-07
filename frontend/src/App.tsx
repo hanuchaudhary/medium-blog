@@ -7,12 +7,12 @@ import { Blogs } from "./pages/Blogs";
 import Publish from "./pages/Publish";
 import Profile from "./pages/Profile";
 import { AnimatePresence, motion } from "framer-motion";
+import { ThemeProvider } from "./provider/ThemeProvider";
 
 function App() {
   const location = useLocation();
 
   return (
-    <div className="dark bg-neutral-900">
       <AnimatePresence mode="wait" initial={false}>
         <Routes location={location} key={location.pathname}>
           <Route
@@ -39,22 +39,8 @@ function App() {
               </PageTransition>
             }
           />
-          <Route
-            path="/blog/:id"
-            element={
-              <PageTransition>
-                <Blog />
-              </PageTransition>
-            }
-          />
-          <Route
-            path="/blogs"
-            element={
-              <PageTransition>
-                <Blogs />
-              </PageTransition>
-            }
-          />
+          <Route path="/blog/:id" element={<Blog />} />
+          <Route path="/blogs" element={<Blogs />} />
           <Route
             path="/publish"
             element={
@@ -73,7 +59,6 @@ function App() {
           />
         </Routes>
       </AnimatePresence>
-    </div>
   );
 }
 
@@ -92,9 +77,11 @@ const PageTransition = ({ children }: { children: React.ReactNode }) => {
 
 const WrappedApp = () => {
   return (
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
+    <ThemeProvider>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </ThemeProvider>
   );
 };
 

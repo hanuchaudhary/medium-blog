@@ -16,10 +16,11 @@ model User {
 }
 
 model Blog {
-  id          String   @id @unique @default(uuid())
-  title       String
-  content     String
-  publishedAt DateTime @default(now())
-  authorId    String
-  author      User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  id               String   @id @unique @default(uuid())
+  title            String
+  content          String
+  shortDescription String?
+  publishedAt      DateTime @default(now())
+  authorId         String
+  author           User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
 }

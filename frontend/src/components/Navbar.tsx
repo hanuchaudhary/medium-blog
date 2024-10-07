@@ -1,58 +1,62 @@
-import { useEffect, useRef, useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import DropdownMenu from "./DropdownMenu";
-import { CircleX, MoonIcon, Search, SunIcon } from "lucide-react";
-import { useProfile } from "../Hooks/Bulk";
-import SearchBlogComponent from "./SearchBlogComponent";
-import axios from "axios";
-import { BACKEND_URL } from "../config";
+'use client'
+
+import { useEffect, useRef, useState } from "react"
+import { Link, useLocation, useNavigate } from "react-router-dom"
+import { CircleX, MoonIcon, Search, SunIcon } from "lucide-react"
+import { useProfile } from "../Hooks/Bulk"
+import SearchBlogComponent from "./SearchBlogComponent"
+import axios from "axios"
+import { BACKEND_URL } from "../config"
+import { useTheme } from "../provider/ThemeProvider"
 
 function useDebounce(inputValue: string, ms: number) {
-  const [value, setValue] = useState(inputValue);
+  const [value, setValue] = useState(inputValue)
 
   useEffect(() => {
     const tId = setTimeout(() => {
-      setValue(inputValue);
-    }, ms);
+      setValue(inputValue)
+    }, ms)
 
-    return () => clearTimeout(tId);
-  }, [inputValue, ms]);
+    return () => clearTimeout(tId)
+  }, [inputValue, ms])
 
-  return value;
+  return value
 }
 
-interface blogInterface {
-  title: string;
-  content: string;
-  id: string;
-  name: string;
+interface BlogInterface {
+  title: string
+  content: string
+  id: string
+  name: string
 }
 
-const Navbar = ({ onClick, toggleDarkMode, darkMode }: any) => {
-  const navigate = useNavigate();
-  const location = useLocation();
-  const path = location.pathname;
+interface NavbarProps {
+  onPublish?: () => void
+}
 
-  //-----------------------------------
+const Navbar = ({ onPublish }: NavbarProps) => {
+  const navigate = useNavigate()
+  const location = useLocation()
+  const path = location.pathname
 
-  const [menu, setMenu] = useState(false); //toggling profile menu
-  const [search, setSearch] = useState(false); //toggling seach bar for mobile
-  const [searchBackground, setSearchBackground] = useState(false); //style for search
-  const searchRef = useRef<HTMLDivElement>(null); //ref for search
+  const [menu, setMenu] = useState(false)
+  const [search, setSearch] = useState(false)
+  const [searchBackground, setSearchBackground] = useState(false)
+  const searchRef = useRef<HTMLDivElement>(null)
 
-  //-------------------------------------
+  const { data } = useProfile()
+  const [blog, setBlog] = useState<BlogInterface[]>([])
+  const logoName = data?.name.split(" ") || []
+  const [searchQuery, setSearchQuery] = useState("")
+  const debounceValue = useDebounce(searchQuery, 200)
 
-  const { data } = useProfile();
-  const [blog, setBlog] = useState<blogInterface[]>([]); //data for search results
-  const logoName = data?.name.split(" ") || []; //for avatar
-  const [searchQuery, setSearchQuery] = useState(""); // Input value storing
-  const debounceValue = useDebounce(searchQuery, 200); //debouncing
+  const { theme, toggleTheme } = useTheme()
 
   useEffect(() => {
     const fetchBlogs = async () => {
       if (debounceValue.trim() === "") {
-        setBlog([]);
-        return;
+        setBlog([])
+        return
       }
 
       try {
@@ -63,30 +67,28 @@ const Navbar = ({ onClick, toggleDarkMode, darkMode }: any) => {
               Authorization: localStorage.getItem("token"),
             },
           }
-        );
-        setBlog(response.data.blogs);
+        )
+        setBlog(response.data.blogs)
       } catch (error) {
-        console.error("Failed to fetch blogs", error);
+        console.error("Failed to fetch blogs", error)
       }
-    };
+    }
 
-    fetchBlogs();
-  }, [debounceValue]);
+    fetchBlogs()
+  }, [debounceValue])
 
-  const handleMenu = () => {
-    setMenu((prev) => !prev);
-  };
+  const handleMenu = () => setMenu((prev) => !prev)
 
   const handleLogout = () => {
-    localStorage.removeItem("token");
-    navigate("/signin");
-  };
+    localStorage.removeItem("token")
+    navigate("/signin")
+  }
 
   return (
-    <div>
+    <div className="relative">
       {searchBackground && searchQuery.trim() !== "" && (
-        <div className="background w-full h-full rounded-b-xl absolute bg-neutral-500 bg-opacity-45">
-          <div className="bg-neutral-50 dark:bg-neutral-700 mt-20 mx-10 rounded-md">
+        <div className="absolute inset-x-0 top-full bg-black bg-opacity-50 rounded-b-xl">
+          <div className="bg-white dark:bg-neutral-800 mt-4 mx-4 md:mx-10 rounded-lg shadow-xl">
             {blog.map((e) => (
               <SearchBlogComponent
                 key={e.id}
@@ -99,83 +101,80 @@ const Navbar = ({ onClick, toggleDarkMode, darkMode }: any) => {
         </div>
       )}
 
-      <nav className="relative flex dark:bg-neutral-900 dark:text-white items-center w-full justify-between font-mono bg-white py-3 px-4 md:px-8 border-b dark:border-neutral-600">
-        <div>
-        {menu && (
-          <div
-            className="absolute top-14 transition-transform z-10 right-10 md:top-14 md:right-14"
-            onClick={handleMenu}
-          >
-            <DropdownMenu handleLogout={handleLogout} />
-          </div>
-        )}
-        </div>
-        <div>
-          <Link
-            to={"/blogs"}
-            className="text-2xl md:block hidden font-bold dark:text-white text-gray-800"
-          >
-            Medium.
-          </Link>
-          <Link
-            to={"/blogs"}
-            className="text-2xl block md:hidden font-bold dark:text-white text-gray-800"
-          >
-            M.
-          </Link>
+      <nav className="sticky top-0 z-50 flex items-center justify-between w-full py-4 px-6 md:px-10 bg-white dark:bg-neutral-900 border-b border-neutral-200 dark:border-neutral-700">
+        <div className="absolute top-full right-6 md:right-10 mt-2 z-10">
+          {menu && (
+            <div className="bg-white dark:bg-neutral-800 rounded-lg shadow-lg p-2">
+              <button
+                onClick={handleLogout}
+                className="w-full text-left px-4 py-2 text-sm text-neutral-700 dark:text-neutral-200 hover:bg-neutral-100 dark:hover:bg-neutral-700 rounded-md transition-colors duration-200"
+              >
+                Logout
+              </button>
+            </div>
+          )}
         </div>
 
-        {/* Search Bar for lg */}
-        <div className="search relative w-1/3 md:block hidden" ref={searchRef}>
+        <Link
+          to="/blogs"
+          className="text-2xl font-bold text-neutral-800 dark:text-white transition-colors duration-200"
+        >
+          <span className="hidden md:inline">Medium.</span>
+          <span className="inline md:hidden">M.</span>
+        </Link>
+
+        <div className="hidden md:block relative w-1/3" ref={searchRef}>
           <input
             type="text"
             onClick={() => setSearchBackground(true)}
-            name="search"
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search"
-            className="w-full py-2 px-4 bg-gray-100 dark:bg-neutral-700  rounded-full focus:outline-none"
+            className="w-full py-2 px-4 bg-neutral-100 dark:bg-neutral-700 text-neutral-800 dark:text-neutral-200 rounded-full focus:outline-none focus:ring-2 focus:ring-green-500 dark:focus:ring-green-400 transition-all duration-200"
           />
         </div>
 
-        <div className="flex items-center gap-5">
-          {/* Search Bar for sm */}
-          <div className="relative flex gap-2 items-center z-10 md:hidden">
+        <div className="flex items-center space-x-4">
+          <div className="relative flex items-center md:hidden">
             <input
               type="text"
-              name="search"
               onClick={() => setSearchBackground(true)}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search"
-              className={` focus:outline transition-all duration-300 ${
-                search ? "block" : "hidden"
-              } py-2 px-4 bg-gray-100 rounded-full focus:outline-none`}
+              className={`transition-all duration-300 ${
+                search ? "w-40 opacity-100" : "w-0 opacity-0"
+              } py-2 px-4 bg-neutral-100 dark:bg-neutral-700 text-neutral-800 dark:text-neutral-200 rounded-full focus:outline-none focus:ring-2 focus:ring-green-500 dark:focus:ring-green-400`}
             />
-            {search ? (
-              <CircleX onClick={() => setSearch((prev) => !prev)} />
-            ) : (
-              <Search onClick={() => setSearch((prev) => !prev)} />
-            )}
+            <button
+              onClick={() => setSearch((prev) => !prev)}
+              className="p-2 rounded-full hover:bg-neutral-200 dark:hover:bg-neutral-700 transition-colors duration-200"
+            >
+              {search ? (
+                <CircleX className="w-5 h-5 text-neutral-600 dark:text-neutral-300" />
+              ) : (
+                <Search className="w-5 h-5 text-neutral-600 dark:text-neutral-300" />
+              )}
+            </button>
           </div>
 
           {path === "/publish" ? (
-            <div className="flex items-center justify-center gap-2 md:gap-4">
-              <Link to={"/blogs"}>
-                <button className="md:py-2 md:px-4 py-1 px-2 bg-red-500 text-red-900 font-semibold rounded-full hover:bg-red-600">
+            <div className="flex items-center space-x-2 md:space-x-4">
+              <Link to="/blogs">
+                <button className="py-1 px-3 md:py-2 md:px-4 bg-red-500 hover:bg-red-600 text-white font-semibold rounded-full transition-colors duration-200">
                   Discard
                 </button>
               </Link>
               <button
-                onClick={onClick}
-                className="md:py-2 md:px-4 py-1 px-2 bg-green-500 text-green-900 font-semibold rounded-full hover:bg-green-600"
+                onClick={onPublish}
+                className="py-1 px-3 md:py-2 md:px-4 bg-green-500 hover:bg-green-600 text-white font-semibold rounded-full transition-colors duration-200"
               >
                 Publish
               </button>
             </div>
           ) : (
-            <Link to={"/publish"}>
+            <Link to="/publish">
               <button
-                className={`py-2 px-4 text-green-900 font-semibold bg-green-100 rounded-full hover:bg-green-200 ${
-                  search ? "hidden" : "block"
+                className={`py-2 px-4 bg-green-500 hover:bg-green-600 text-white font-semibold rounded-full transition-colors duration-200 ${
+                  search ? "hidden md:block" : "block"
                 }`}
               >
                 Write
@@ -183,25 +182,34 @@ const Navbar = ({ onClick, toggleDarkMode, darkMode }: any) => {
             </Link>
           )}
 
-          <div onClick={toggleDarkMode}>{darkMode ? <MoonIcon/> : <SunIcon />}</div>
+          <button
+            onClick={toggleTheme}
+            className="p-2 rounded-full hover:bg-neutral-200 dark:hover:bg-neutral-700 transition-colors duration-200"
+            aria-label="Toggle theme"
+          >
+            {theme === "dark" ? (
+              <MoonIcon className="w-5 h-5 text-neutral-600 dark:text-neutral-300" />
+            ) : (
+              <SunIcon className="w-5 h-5 text-neutral-600 dark:text-neutral-300" />
+            )}
+          </button>
 
-          <div onClick={handleMenu}>
-            <div
-              className={`w-10 h-10 select-none cursor-pointer flex items-center justify-center bg-green-500 font-semibold hover:bg-green-600 hover:scale-105 transition-transform text-white rounded-full ${
-                search ? "hidden" : "block"
-              }`}
-            >
-              {logoName.length > 1
-                ? `${logoName[0][0]}${logoName[1][0]}`
-                : logoName[0]
-                ? logoName[0][0]
-                : ""}
-            </div>
-          </div>
+          <button
+            onClick={handleMenu}
+            className={`w-10 h-10 flex items-center justify-center bg-green-500 hover:bg-green-600 text-white font-semibold rounded-full transition-colors duration-200 ${
+              search ? "hidden md:flex" : "flex"
+            }`}
+          >
+            {logoName.length > 1
+              ? `${logoName[0][0]}${logoName[1][0]}`
+              : logoName[0]
+              ? logoName[0][0]
+              : ""}
+          </button>
         </div>
       </nav>
     </div>
-  );
-};
+  )
+}
 
-export default Navbar;
+export default Navbar
