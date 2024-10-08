@@ -2,7 +2,7 @@ import FullBlog from "../components/FullBlog";
 import { useSearchBlog } from "../Hooks/Bulk";
 import Navbar from "../components/Navbar";
 import { useParams } from "react-router-dom";
-import Skeleton from "../components/Skeleton";
+import { BarLoader } from "react-spinners";
 
 const Blog = () => {
   const { id } = useParams();
@@ -21,8 +21,8 @@ const Blog = () => {
     return (
       <div className="dark:bg-neutral-900 h-screen">
         <Navbar />
-        <div className="lg:px-52 md:px-24 px-4 my-10 text-white">
-          <Skeleton />
+        <div className="pt-40 w-[90%] m-auto">
+          <BarLoader width={"100%"} color="green" />
         </div>
       </div>
     );
@@ -31,7 +31,7 @@ const Blog = () => {
   return (
     <div>
       <Navbar />
-      <div className="lg:px-52 md:px-24 px-2 py-5  ">
+      <div className="lg:px-52 pt-24 md:px-24 px-2 dark:bg-black py-5  ">
         <FullBlog
           publishedAt={formattedDate}
           name={data?.author.name || "Anoymonous"}

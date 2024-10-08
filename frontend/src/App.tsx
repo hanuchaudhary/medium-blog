@@ -3,7 +3,7 @@ import Signup from "./pages/Signup";
 import Signin from "./pages/Signin";
 import Blog from "./pages/Blog";
 import Landing from "./pages/Landing";
-import { Blogs } from "./pages/Blogs";
+import Blogs from "./pages/Blogs";
 import Publish from "./pages/Publish";
 import Profile from "./pages/Profile";
 import { AnimatePresence, motion } from "framer-motion";
@@ -13,52 +13,38 @@ function App() {
   const location = useLocation();
 
   return (
-      <AnimatePresence mode="wait" initial={false}>
-        <Routes location={location} key={location.pathname}>
-          <Route
-            path="/"
-            element={
-              <PageTransition>
-                <Landing />
-              </PageTransition>
-            }
-          />
-          <Route
-            path="/signup"
-            element={
-              <PageTransition>
-                <Signup />
-              </PageTransition>
-            }
-          />
-          <Route
-            path="/signin"
-            element={
-              <PageTransition>
-                <Signin />
-              </PageTransition>
-            }
-          />
-          <Route path="/blog/:id" element={<Blog />} />
-          <Route path="/blogs" element={<Blogs />} />
-          <Route
-            path="/publish"
-            element={
-              <PageTransition>
-                <Publish />
-              </PageTransition>
-            }
-          />
-          <Route
-            path="/me"
-            element={
-              <PageTransition>
-                <Profile />
-              </PageTransition>
-            }
-          />
-        </Routes>
-      </AnimatePresence>
+    <AnimatePresence mode="wait" initial={false}>
+      <Routes location={location} key={location.pathname}>
+        <Route
+          path="/"
+          element={
+            <PageTransition>
+              <Landing />
+            </PageTransition>
+          }
+        />
+        <Route
+          path="/signup"
+          element={
+            <PageTransition>
+              <Signup />
+            </PageTransition>
+          }
+        />
+        <Route
+          path="/signin"
+          element={
+            <PageTransition>
+              <Signin />
+            </PageTransition>
+          }
+        />
+        <Route path="/blog/:id" element={<Blog />} />
+        <Route path="/blogs" element={<Blogs />} />
+        <Route path="/publish" element={<Publish />} />
+        <Route path="/me" element={<Profile />} />
+      </Routes>
+    </AnimatePresence>
   );
 }
 

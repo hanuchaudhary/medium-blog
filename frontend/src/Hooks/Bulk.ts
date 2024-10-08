@@ -27,8 +27,6 @@ export const useSearchBlog = ({ id }: { id: string }) => {
                         }
                     });
                 setLoading(false);
-                console.log(response.data.blog);
-
                 setData(response.data.blog);
             } catch (err) {
                 setLoading(true)

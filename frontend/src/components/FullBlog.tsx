@@ -17,9 +17,9 @@ const FullBlog = ({ title, content, name, publishedAt }: FullBlogProps) => {
   const logoName = name?.split(" ") || [];
 
   return (
-    <div className="bg-white dark:bg-neutral-900 min-h-screen rounded-2xl">
-      <div className="max-w-4xl mx-auto px-2 md:p-0">
-        <div className="flex justify-between items-center bg-neutral-100 dark:bg-neutral-800 p-4 md:p-6 rounded-lg shadow-md mb-8">
+    <div className="bg-white py-2 md:py-8 font-mono dark:bg-neutral-900 min-h-screen rounded-2xl">
+      <div className="max-w-5xl mx-auto px-2 md:px-6">
+        <div className="flex justify-between items-center bg-neutral-100 dark:bg-neutral-800 p-4 rounded-xl shadow-md mb-8">
           <div className="flex items-center space-x-4">
             <div className="w-10 h-10 md:w-14 md:h-14 lg:w-16 lg:h-16 flex items-center justify-center bg-green-500 hover:bg-green-600 text-white font-semibold rounded-full transition-all duration-200 shadow-lg">
               <span className="text-lg md:text-xl lg:text-2xl">
@@ -49,7 +49,7 @@ const FullBlog = ({ title, content, name, publishedAt }: FullBlogProps) => {
           </Link>
         </div>
         <article className="prose prose-lg dark:prose-invert max-w-none">
-          <h1 className="text-xl md:text-3xl lg:text-4xl font-bold mb-6 text-neutral-900 dark:text-neutral-100">
+          <h1 className="text-md md:text-3xl lg:text-4xl font-bold mb-6 text-neutral-900 dark:text-neutral-100">
             {title}
           </h1>
           <div className="text-neutral-800 dark:text-neutral-200 ">

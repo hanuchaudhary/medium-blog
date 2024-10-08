@@ -1,5 +1,5 @@
-// SignUpForm.tsx
 import { useState } from "react";
+import { motion } from "framer-motion";
 import Input from "../components/Input";
 import Button from "../components/Button";
 import AuthBottom from "../components/AuthBottom";
@@ -23,9 +23,7 @@ const SignUpForm = () => {
 
   const handleSubmit = async () => {
     if (!signupInputs.email || !signupInputs.name || !signupInputs.password) {
-      setError(
-        "Please fill in all required fields"
-      );
+      setError("Please fill in all required fields");
       return;
     }
 
@@ -43,74 +41,77 @@ const SignUpForm = () => {
     } catch (error) {
       console.log(error);
       setLoading(false);
-      setError("Error while Signingup : " + error);
+      setError("Error while Signing up: " + error);
     }
   };
 
   return (
-    <div className="flex items-center dark:bg-neutral-900 dark:text-white bg-neutral-100 justify-center h-screen">
+    <div className="min-h-screen flex items-center justify-center bg-white dark:bg-black bg-opacity-80 dark:bg-opacity-80 text-black dark:text-white transition-all duration-300"
+         style={{backgroundImage: "url('https://miro.medium.com/v2/format:webp/4*SdjkdS98aKH76I8eD0_qjw.png')"}}>
       {loading ? (
         <div className="flex items-center justify-center bg-transparent">
           <Spinner />
         </div>
       ) : (
-        <div
-          className={`relative border-dashed md:px-16 mx-8 ${
-            error ? "border-red-700" : "border-green-950 dark:border-green-600"
-          }  border-2 md:p-8 p-4 rounded-none font-mono`}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className={`relative border-2 border-dashed md:px-16 mx-8 ${
+            error ? "border-red-600" : "border-black dark:border-neutral-700"
+          } md:p-8 p-6 rounded-lg bg-white dark:bg-neutral-900 bg-opacity-90 dark:bg-opacity-70 font-sans max-w-md w-full`}
         >
-          <div>
-            <Link to={"/"} className="absolute top-4 right-4">
-              <X />
-            </Link>
-          </div>
-          <div>
-            <AuthTop
-              title={"Signup"}
-              subTitle={"Create your account to get started."}
+          <Link to={"/"} className="absolute top-4 right-4 text-black dark:text-white hover:opacity-70 transition-opacity">
+            <X size={24} />
+          </Link>
+          <AuthTop
+            title={"Sign Up"}
+            subTitle={"Create your account to get started."}
+          />
+          {error && (
+            <p className="text-red-600 text-center font-semibold mb-4">{error}</p>
+          )}
+          <div className="space-y-4">
+            <Input
+              name="name"
+              label="Full Name"
+              type="text"
+              value={signupInputs.name}
+              placeholder="John Doe"
+              onChange={(e) =>
+                setSignupInputs({ ...signupInputs, name: e.target.value })
+              }
+            />
+            <Input
+              name="email"
+              label="Email"
+              type="email"
+              value={signupInputs.email}
+              onChange={(e) =>
+                setSignupInputs({ ...signupInputs, email: e.target.value })
+              }
+              placeholder="john@example.com"
+            />
+            <Input
+              name="password"
+              label="Password"
+              type="password"
+              value={signupInputs.password}
+              onChange={(e) =>
+                setSignupInputs({ ...signupInputs, password: e.target.value })
+              }
+              placeholder="Enter your password"
             />
           </div>
-          {error && (
-            <h1 className="dark:text-red-600 text-red-600 text-center font-semibold">{error}</h1>
-          )}
-          <Input
-            name="name"
-            label="Full Name"
-            type="text"
-            value={signupInputs.name}
-            placeholder="John Doe"
-            onChange={(e) =>
-              setSignupInputs({ ...signupInputs, name: e.target.value })
-            }
-          />
-          <Input
-            name="email"
-            label="Email"
-            type="email"
-            value={signupInputs.email}
-            onChange={(e) =>
-              setSignupInputs({ ...signupInputs, email: e.target.value })
-            }
-            placeholder="john@example.com"
-          />
-          <Input
-            name="password"
-            label="Password"
-            type="password"
-            value={signupInputs.password}
-            onChange={(e) =>
-              setSignupInputs({ ...signupInputs, password: e.target.value })
-            }
-            placeholder="Enter your password"
-          />
-
-          <Button text="Sign Up" onClick={handleSubmit} />
+          <div className="mt-6">
+            <Button text="Sign Up" onClick={handleSubmit} />
+          </div>
           <AuthBottom
             title="Already have an Account? "
             to="/signin"
-            label="Signin"
+            label="Sign In"
           />
-        </div>
+        </motion.div>
       )}
     </div>
   );

@@ -1,62 +1,63 @@
-'use client'
+"use client";
 
-import { useEffect, useRef, useState } from "react"
-import { Link, useLocation, useNavigate } from "react-router-dom"
-import { CircleX, MoonIcon, Search, SunIcon } from "lucide-react"
-import { useProfile } from "../Hooks/Bulk"
-import SearchBlogComponent from "./SearchBlogComponent"
-import axios from "axios"
-import { BACKEND_URL } from "../config"
-import { useTheme } from "../provider/ThemeProvider"
+import { useEffect, useRef, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { CircleX, MoonIcon, Search, SunIcon } from "lucide-react";
+import { useProfile } from "../Hooks/Bulk";
+import SearchBlogComponent from "./SearchBlogComponent";
+import axios from "axios";
+import { BACKEND_URL } from "../config";
+import { useTheme } from "../provider/ThemeProvider";
 
 function useDebounce(inputValue: string, ms: number) {
-  const [value, setValue] = useState(inputValue)
+  const [value, setValue] = useState(inputValue);
 
   useEffect(() => {
     const tId = setTimeout(() => {
-      setValue(inputValue)
-    }, ms)
+      setValue(inputValue);
+    }, ms);
 
-    return () => clearTimeout(tId)
-  }, [inputValue, ms])
+    return () => clearTimeout(tId);
+  }, [inputValue, ms]);
 
-  return value
+  return value;
 }
 
 interface BlogInterface {
-  title: string
-  content: string
-  id: string
-  name: string
+  title: string;
+  content: string;
+  id: string;
+  author: {
+    name: string;
+  };
 }
 
 interface NavbarProps {
-  onPublish?: () => void
+  onPublish?: () => void;
 }
 
 const Navbar = ({ onPublish }: NavbarProps) => {
-  const navigate = useNavigate()
-  const location = useLocation()
-  const path = location.pathname
+  const navigate = useNavigate();
+  const location = useLocation();
+  const path = location.pathname;
 
-  const [menu, setMenu] = useState(false)
-  const [search, setSearch] = useState(false)
-  const [searchBackground, setSearchBackground] = useState(false)
-  const searchRef = useRef<HTMLDivElement>(null)
+  const [menu, setMenu] = useState(false);
+  const [search, setSearch] = useState(false);
+  const [searchBackground, setSearchBackground] = useState(false);
+  const searchRef = useRef<HTMLDivElement>(null);
 
-  const { data } = useProfile()
-  const [blog, setBlog] = useState<BlogInterface[]>([])
-  const logoName = data?.name.split(" ") || []
-  const [searchQuery, setSearchQuery] = useState("")
-  const debounceValue = useDebounce(searchQuery, 200)
-
-  const { theme, toggleTheme } = useTheme()
+  const { data } = useProfile();
+  const [blog, setBlog] = useState<BlogInterface[]>([]);
+  const logoName = data?.name.split(" ") || [];
+  const [searchQuery, setSearchQuery] = useState("");
+  const debounceValue = useDebounce(searchQuery, 200);
+  const { theme, toggleTheme } = useTheme();
 
   useEffect(() => {
     const fetchBlogs = async () => {
       if (debounceValue.trim() === "") {
-        setBlog([])
-        return
+        setBlog([]);
+        return;
       }
 
       try {
@@ -67,49 +68,64 @@ const Navbar = ({ onPublish }: NavbarProps) => {
               Authorization: localStorage.getItem("token"),
             },
           }
-        )
-        setBlog(response.data.blogs)
+        );
+        setBlog(response.data.blogs);
       } catch (error) {
-        console.error("Failed to fetch blogs", error)
+        console.error("Failed to fetch blogs", error);
       }
-    }
+    };
 
-    fetchBlogs()
-  }, [debounceValue])
+    fetchBlogs();
+  }, [debounceValue]);
 
-  const handleMenu = () => setMenu((prev) => !prev)
+  const handleMenu = () => setMenu((prev) => !prev);
 
   const handleLogout = () => {
-    localStorage.removeItem("token")
-    navigate("/signin")
-  }
+    localStorage.removeItem("token");
+    navigate("/signin");
+  };
 
   return (
-    <div className="relative">
+    <div className="relative font-mono">
       {searchBackground && searchQuery.trim() !== "" && (
         <div className="absolute inset-x-0 top-full bg-black bg-opacity-50 rounded-b-xl">
-          <div className="bg-white dark:bg-neutral-800 mt-4 mx-4 md:mx-10 rounded-lg shadow-xl">
-            {blog.map((e) => (
-              <SearchBlogComponent
-                key={e.id}
-                to={`/blog/${e.id}`}
-                title={e.title}
-                name={e.name}
-              />
-            ))}
+          <div className="flex flex-col gap-1 my-4 mx-4 md:mx-10 rounded-lg shadow-xl">
+            {blog.length > 0 ? (
+              blog.map((e) => (
+                <SearchBlogComponent
+                  key={e.id}
+                  to={`/blog/${e.id}`}
+                  title={e.title}
+                  name={e.author.name}
+                />
+              ))
+            ) : (
+              <h1 className="w-full font-semibold text-center">
+                No blog Find..
+              </h1>
+            )}
           </div>
         </div>
       )}
 
-      <nav className="sticky top-0 z-50 flex items-center justify-between w-full py-4 px-6 md:px-10 bg-white dark:bg-neutral-900 border-b border-neutral-200 dark:border-neutral-700">
+      <nav className="fixed top-0 flex items-center justify-between w-full backdrop-blur-lg bg-opacity-10 py-4 px-6 md:px-10 bg-white dark:bg-opacity-10 dark:bg-neutral-900 border-b border-neutral-200 dark:border-neutral-900 rounded-b-xl">
         <div className="absolute top-full right-6 md:right-10 mt-2 z-10">
           {menu && (
-            <div className="bg-white dark:bg-neutral-800 rounded-lg shadow-lg p-2">
+            <div className="bg-white dark:bg-neutral-900 rounded-lg flex gap-2 flex-col shadow-lg p-2">
+              <Link
+                to={"/me"}
+                className="w-full text-left px-4 py-2 text-sm text-neutral-700 dark:text-neutral-200 hover:bg-neutral-100 dark:bg-neutral-800 bg-neutral-200 dark:hover:bg-neutral-800 rounded-md transition-colors duration-200"
+              >
+                Profile
+              </Link>
               <button
                 onClick={handleLogout}
-                className="w-full text-left px-4 py-2 text-sm text-neutral-700 dark:text-neutral-200 hover:bg-neutral-100 dark:hover:bg-neutral-700 rounded-md transition-colors duration-200"
+                className="w-full text-left px-4 py-2 text-sm text-neutral-700 dark:text-neutral-200 hover:bg-neutral-100 dark:bg-neutral-800 bg-neutral-200 dark:hover:bg-neutral-700 rounded-md transition-colors duration-200"
               >
                 Logout
+              </button>
+              <button className="w-full text-left px-4 py-2 text-sm text-neutral-700 dark:text-neutral-200 hover:bg-neutral-100 dark:bg-neutral-800 bg-neutral-200 dark:hover:bg-neutral-700 rounded-md transition-colors duration-200">
+                Deactivate
               </button>
             </div>
           )}
@@ -123,15 +139,17 @@ const Navbar = ({ onPublish }: NavbarProps) => {
           <span className="inline md:hidden">M.</span>
         </Link>
 
-        <div className="hidden md:block relative w-1/3" ref={searchRef}>
-          <input
-            type="text"
-            onClick={() => setSearchBackground(true)}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Search"
-            className="w-full py-2 px-4 bg-neutral-100 dark:bg-neutral-700 text-neutral-800 dark:text-neutral-200 rounded-full focus:outline-none focus:ring-2 focus:ring-green-500 dark:focus:ring-green-400 transition-all duration-200"
-          />
-        </div>
+        {path != "/publish" && (
+          <div className="hidden md:block relative w-1/3" ref={searchRef}>
+            <input
+              type="text"
+              onClick={() => setSearchBackground(true)}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search"
+              className="w-full py-2 px-4 bg-neutral-200 dark:bg-neutral-900 text-neutral-800 dark:text-neutral-200 rounded-full focus:outline-none focus:ring-2 focus:ring-green-500 dark:focus:ring-green-400 transition-all duration-200"
+            />
+          </div>
+        )}
 
         <div className="flex items-center space-x-4">
           <div className="relative flex items-center md:hidden">
@@ -142,7 +160,7 @@ const Navbar = ({ onPublish }: NavbarProps) => {
               placeholder="Search"
               className={`transition-all duration-300 ${
                 search ? "w-40 opacity-100" : "w-0 opacity-0"
-              } py-2 px-4 bg-neutral-100 dark:bg-neutral-700 text-neutral-800 dark:text-neutral-200 rounded-full focus:outline-none focus:ring-2 focus:ring-green-500 dark:focus:ring-green-400`}
+              } py-2 px-4 bg-neutral-100 dark:bg-neutral-900 text-neutral-800 dark:text-neutral-200 rounded-full focus:outline-none focus:ring-2 focus:ring-green-500 dark:focus:ring-green-400`}
             />
             <button
               onClick={() => setSearch((prev) => !prev)}
@@ -209,7 +227,7 @@ const Navbar = ({ onPublish }: NavbarProps) => {
         </div>
       </nav>
     </div>
-  )
-}
+  );
+};
 
-export default Navbar
+export default Navbar;

@@ -1,62 +1,99 @@
+import { motion } from "framer-motion";
+import { useTheme } from "../provider/ThemeProvider";
+import { MoonIcon, SunIcon } from "lucide-react";
 import { Link } from "react-router-dom";
-import Button from "../components/Button";
 
-export default function Component() {
+export default function LandingPage() {
+  const { theme, toggleTheme } = useTheme();
+
+  const menuItems = [
+    { name: "Our story", link: null },
+    { name: "Membership", link: null },
+    { name: "Write", link: null },
+    { name: "Sign In", link: "/signin" },
+  ];
+
   return (
-    <div className="min-h-screen dark:bg-neutral-900 dark:text-white bg-[#f5f5f5] text-[#1a1a1a] font-mono">
-      <header className="flex items-center justify-between px-8 py-4 dark:border-neutral-600 border-b">
-        <div className="text-2xl font-bold">Medium.</div>
-        <nav className="flex items-center gap-6">
-          <Link to="#" className="text-sm hidden md:block font-medium">
-            Our story
-          </Link>
-          <Link to="#" className="text-sm hidden md:block font-medium">
-            Membership
-          </Link>
-          <Link to={"/signup"}>
-            <Button text="Get Started" />
-          </Link>
+    <div
+      className="min-h-screen flex flex-col bg-cover bg-center transition-all duration-300 bg-white dark:bg-black bg-opacity-80 dark:bg-opacity-80 text-black dark:text-white"
+      style={{
+        backgroundImage:
+          "url('https://miro.medium.com/v2/format:webp/4*SdjkdS98aKH76I8eD0_qjw.png')",
+      }}
+    >
+      <header className="p-4 md:p-6 dark:bg-black dark:bg-opacity-10 rounded-b-2xl border-b dark:border-black border-neutral-400 backdrop-blur-lg">
+        <nav className="flex items-center justify-between">
+          <motion.h1
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="text-3xl font-bold"
+          >
+            Medium
+          </motion.h1>
+          <div className="flex items-center space-x-8">
+            <ul className="hidden md:flex space-x-6">
+              {menuItems.map((item, index) => (
+                <motion.li
+                  key={item.name}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.5, delay: 0.1 * (index + 1) }}
+                  className="cursor-pointer hover:underline"
+                >
+                  {item.link ? (
+                    <Link className="text-green-500" to={item.link}>{item.name}</Link>
+                  ) : (
+                    item.name
+                  )}
+                </motion.li>
+              ))}
+            </ul>
+            <button
+              onClick={toggleTheme}
+              className="p-2 rounded-full hover:bg-neutral-200 dark:hover:bg-neutral-700 transition-colors duration-200"
+              aria-label="Toggle theme"
+            >
+              {theme === "dark" ? (
+                <SunIcon className="w-5 h-5 text-neutral-600 dark:text-neutral-300" />
+              ) : (
+                <MoonIcon className="w-5 h-5 text-neutral-600 dark:text-neutral-300" />
+              )}
+            </button>
+          </div>
         </nav>
       </header>
-      <main className="flex select-none flex-col h-full items-center justify-center flex-1 px-8 py-16 text-center">
-        <h1 className="md:text-6xl text-4xl font-bold leading-tight">
-          Human <br /> stories & ideas
-        </h1>
-        <p className="mt-4 text-lg">
-          A place to read, write, and deepen your understanding
-        </p>
-        <Link to={"/signup"} className="py-20 ">
-          <Button text="Get Started" />
+
+      <main className="flex-1 flex flex-col justify-center items-center text-center p-6">
+        <motion.h2
+          className="text-4xl md:text-6xl font-bold mb-4"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.5 }}
+        >
+          Stay curious.
+        </motion.h2>
+        <motion.p
+          className="text-xl md:text-2xl max-w-2xl mb-8"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.7 }}
+        >
+          Discover stories, thinking, and expertise from writers on any topic.
+        </motion.p>
+        <Link to={"/signup"}>
+          <motion.button
+            className="px-6 py-3 text-lg rounded-full bg-black dark:bg-white text-white dark:text-black hover:opacity-90 transition-opacity duration-300"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.9 }}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            Start reading
+          </motion.button>
         </Link>
       </main>
-      <footer className="flex fixed bottom-0 w-full justify-center px-8 py-4 dark:border-neutral-600  border-t">
-        <nav className="grid grid-cols-4 md:grid-cols-4 lg:grid-cols-8 gap-4 text-sm">
-          <Link to={"#"} className="text-muted-foreground">
-            Help
-          </Link>
-          <Link to={"#"} className="text-muted-foreground">
-            Status
-          </Link>
-          <Link to={"#"} className="text-muted-foreground">
-            About
-          </Link>
-          <Link to={"#"} className="text-muted-foreground">
-            Careers
-          </Link>
-          <Link to={"#"} className="text-muted-foreground">
-            Blog
-          </Link>
-          <Link to={"#"} className="text-muted-foreground">
-            Privacy
-          </Link>
-          <Link to={"#"} className="text-muted-foreground">
-            Terms
-          </Link>
-          <Link to={"#"} className="text-muted-foreground">
-            Teams
-          </Link>
-        </nav>
-      </footer>
     </div>
   );
 }
