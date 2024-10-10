@@ -17,7 +17,7 @@ const FullBlog = ({ title, content, name, publishedAt }: FullBlogProps) => {
   const logoName = name?.split(" ") || [];
 
   return (
-    <div className="bg-white py-2 md:py-8 font-mono dark:bg-neutral-900 min-h-screen rounded-2xl">
+    <div className="bg-neutral-200 py-2 md:py-8 font-mono dark:bg-neutral-900 min-h-screen rounded-2xl">
       <div className="max-w-5xl mx-auto px-2 md:px-6">
         <div className="flex justify-between items-center bg-neutral-100 dark:bg-neutral-800 p-4 rounded-xl shadow-md mb-8">
           <div className="flex items-center space-x-4">
@@ -52,7 +52,7 @@ const FullBlog = ({ title, content, name, publishedAt }: FullBlogProps) => {
           <h1 className="text-md md:text-3xl lg:text-4xl font-bold mb-6 text-neutral-900 dark:text-neutral-100">
             {title}
           </h1>
-          <div className="text-neutral-800 dark:text-neutral-200 ">
+          <div className="text-neutral-800 z-10 dark:text-neutral-200 ">
             <MarkdownEditor.Markdown style={{backgroundColor : "#262626", padding : "20px 10px" , borderRadius : "1vw"}} source={content} />
           </div>
         </article>

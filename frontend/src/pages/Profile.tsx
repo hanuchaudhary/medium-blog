@@ -23,11 +23,11 @@ export default function Profile() {
   };
 
   return (
-    <div className="dark:bg-black font-mono min-h-screen dark:text-white bg-neutral-100 text-black ">
+    <div className="dark:bg-black font-mono min-h-screen dark:text-white bg-white text-black ">
       <Navbar />
-      <div className="pt-24 md:pt-32 rounded-xl py-4 md:mx-40 bg-neutral-200 dark:bg-neutral-950 px-4">
+      <div className="pt-24 md:pt-32 rounded-xl py-4 md:mx-40 shadow-md bg-neutral-200 dark:bg-neutral-950 px-4 ">
         <div className="flex justify-between items-center mb-8">
-          <div className="dark:bg-neutral-900 w-full rounded-xl p-2 md:p-4 flex flex-col md:flex-row items-start md:items-center justify-between">
+          <div className="dark:bg-neutral-900 bg-neutral-100 shadow-lg w-full rounded-xl p-2 md:p-4 flex flex-col md:flex-row items-start md:items-center justify-between">
             <div className="mb-4 md:mb-0">
               <h1 className="text-xl md:text-3xl font-semibold dark:text-green-500 text-green-950">
                 {data?.name}
@@ -39,14 +39,14 @@ export default function Profile() {
             <div className="flex flex-col md:flex-row gap-2 w-full md:w-auto">
               <button
                 onClick={handleLogout}
-                className="bg-green-600 w-full md:w-auto leading-none md:py-2 px-2 border border-green-900 font-semibold py-1 flex items-center justify-center text-white rounded hover:bg-green-700 transition-colors"
+                className="bg-green-500 w-full md:w-auto leading-none md:py-2 px-2 border border-green-900  font-semibold py-1 flex items-center justify-center text-green-950 rounded hover:bg-green-600 transition-colors"
               >
                 <LogOut className="mr-2" size={18} />
                 Logout
               </button>
               <Link
                 to="/blogs"
-                className="bg-green-600 w-full md:w-auto leading-none md:py-2 px-2 border border-green-900 font-semibold py-1 flex items-center justify-center text-white rounded hover:bg-green-700 transition-colors"
+                className="bg-green-500 w-full md:w-auto leading-none md:py-2 px-2 border border-green-900 font-semibold py-1 flex items-center justify-center text-green-950 rounded hover:bg-green-600 transition-colors"
               >
                 <ArrowLeft className="mr-2" size={18} />
                 Back to Blogs

@@ -24,7 +24,7 @@ const UserBlog = ({
     <div>
       <div
         id={id}
-        className="mb-6 p-6 dark:bg-neutral-900 dark:hover:bg-neutral-800 duration-500 transition-colors rounded-lg hover:bg-neutral-200  shadow cursor-pointer select-none "
+        className="mb-6 p-6 dark:bg-neutral-900 dark:hover:bg-neutral-800 duration-500 transition-colors rounded-lg bg-white hover:bg-green-50  shadow cursor-pointer select-none "
       >
         <div className="flex items-center justify-between mb-4">
           <h3 className="md:text-xl font-semibold dark:text-neutral-100 text-neutral-800 mb-2">

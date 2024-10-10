@@ -108,7 +108,7 @@ const Navbar = ({ onPublish }: NavbarProps) => {
         </div>
       )}
 
-      <nav className="fixed top-0 flex items-center justify-between w-full backdrop-blur-lg bg-opacity-10 py-4 px-6 md:px-10 bg-white dark:bg-opacity-10 dark:bg-neutral-900 border-b border-neutral-200 dark:border-neutral-900 rounded-b-xl">
+      <nav className="fixed z-[500] top-0 flex items-center justify-between w-full backdrop-blur-lg bg-opacity-10 py-4 px-6 md:px-10 bg-white dark:bg-opacity-10 dark:bg-neutral-900 border-b border-neutral-200 dark:border-neutral-900 rounded-b-xl">
         <div className="absolute top-full right-6 md:right-10 mt-2 z-10">
           {menu && (
             <div className="bg-white dark:bg-neutral-900 rounded-lg flex gap-2 flex-col shadow-lg p-2">
@@ -191,7 +191,7 @@ const Navbar = ({ onPublish }: NavbarProps) => {
           ) : (
             <Link to="/publish">
               <button
-                className={`py-2 px-4 bg-green-500 hover:bg-green-600 text-white font-semibold rounded-full transition-colors duration-200 ${
+                className={`py-2 px-4 bg-green-500  hover:bg-green-600 text-green-950 font-bold rounded-full transition-colors duration-200 ${
                   search ? "hidden md:block" : "block"
                 }`}
               >
@@ -206,15 +206,15 @@ const Navbar = ({ onPublish }: NavbarProps) => {
             aria-label="Toggle theme"
           >
             {theme === "dark" ? (
-              <MoonIcon className="w-5 h-5 text-neutral-600 dark:text-neutral-300" />
-            ) : (
               <SunIcon className="w-5 h-5 text-neutral-600 dark:text-neutral-300" />
+            ) : (
+            <MoonIcon className="w-5 h-5 text-neutral-600 dark:text-neutral-300" />
             )}
           </button>
 
           <button
             onClick={handleMenu}
-            className={`w-10 h-10 flex items-center justify-center bg-green-500 hover:bg-green-600 text-white font-semibold rounded-full transition-colors duration-200 ${
+            className={`w-10 h-10 flex items-center justify-center bg-green-500 hover:bg-green-600 text-green-950 font-semibold rounded-full transition-colors duration-200 ${
               search ? "hidden md:flex" : "flex"
             }`}
           >
