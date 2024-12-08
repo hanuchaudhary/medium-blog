@@ -26,7 +26,7 @@ const BlogComponents = ({
 
   return (
     <Link to={`/blog/${id}`} className="block ">
-      <article className="font-mono hover:bg-green-50 transition-colors rounded-lg md:p-6 p-3 mb-6 border border-neutral-200 dark:hover:bg-neutral-800 bg-neutral-100 dark:bg-neutral-900 dark:border-neutral-900 duration-500">
+      <article className="font-mono hover:bg-green-50 transition-colors rounded-lg md:p-6 p-3 mb-6 border border-neutral-200 dark:hover:bg-neutral-700 bg-neutral-100 dark:bg-neutral-800 dark:border-neutral-900 duration-500">
         <header className="flex items-center space-x-4 mb-4">
           <div className="flex-shrink-0">
             <div className="w-12 h-12 flex items-center justify-center bg-green-500 hover:bg-green-600 transition-colors text-white rounded-full font-semibold text-lg capitalize">

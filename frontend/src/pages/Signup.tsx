@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { FormEvent, useState } from "react";
 import { motion } from "framer-motion";
 import Input from "../components/Input";
 import Button from "../components/Button";
@@ -9,19 +9,26 @@ import AuthTop from "../components/AuthTop";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { BACKEND_URL } from "../config";
-import { X } from "lucide-react";
+import { Eye, EyeOff, X } from "lucide-react";
+import BackgroundPanel from "../components/BackgroundPanel";
 
 const SignUpForm = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [showPassword, setShowPassword] = useState(false);
   const [signupInputs, setSignupInputs] = useState<SignupType>({
     email: "",
     password: "",
     name: "",
   });
 
-  const handleSubmit = async () => {
+  const handleShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
     if (!signupInputs.email || !signupInputs.name || !signupInputs.password) {
       setError("Please fill in all required fields");
       return;
@@ -38,40 +45,45 @@ const SignUpForm = () => {
       localStorage.setItem("token", jwt);
       setError(null);
       navigate("/blogs");
-    } catch (error) {
-      console.log(error);
+    } catch (error: any) {
       setLoading(false);
-      setError("Error while Signing up: " + error);
+      setError("Something went wrong. Please try again later.");
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-white dark:bg-black bg-opacity-80 dark:bg-opacity-80 text-black dark:text-white transition-all duration-300"
-         style={{backgroundImage: "url('https://miro.medium.com/v2/format:webp/4*SdjkdS98aKH76I8eD0_qjw.png')"}}>
-      {loading ? (
-        <div className="flex items-center justify-center bg-transparent">
+    <div
+      className="min-h-screen relative flex items-center justify-center bg-customLightOrange text-black dark:text-white transition-all duration-300"
+      style={{
+        backgroundImage:
+          "url('https://miro.medium.com/v2/format:webp/4*SdjkdS98aKH76I8eD0_qjw.png')",
+      }}
+    >
+      {loading && (
+        <div className="flex h-full w-full absolute z-[999999999] bg-customLightOrange/60  items-center justify-center ">
           <Spinner />
         </div>
-      ) : (
+      )}
+      <div className="relative h-full md:w-96 w-[22rem]">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className={`relative border-2 border-dashed md:px-16 mx-8 ${
-            error ? "border-red-600" : "border-black dark:border-neutral-700"
-          } md:p-8 p-6 rounded-lg bg-white dark:bg-neutral-900 bg-opacity-90 dark:bg-opacity-70 font-sans max-w-md w-full`}
+          className={`md:p-8 p-6 relative z-[99999] rounded-lg border-2 border-black bg-customLightOrange font-sans max-w-md w-full`}
         >
-          <Link to={"/"} className="absolute top-4 right-4 text-black dark:text-white hover:opacity-70 transition-opacity">
+          <Link
+            to={"/"}
+            className="absolute top-4 right-4 text-black hover:opacity-70 transition-opacity"
+          >
             <X size={24} />
           </Link>
-          <AuthTop
-            title={"Sign Up"}
-            subTitle={"Create your account to get started."}
-          />
+          <AuthTop title={"Sign Up"} />
           {error && (
-            <p className="text-red-600 text-center font-semibold mb-4">{error}</p>
+            <p className="text-customPink text-center font-semibold mb-4">
+              {error}
+            </p>
           )}
-          <div className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-4">
             <Input
               name="name"
               label="Full Name"
@@ -90,29 +102,46 @@ const SignUpForm = () => {
               onChange={(e) =>
                 setSignupInputs({ ...signupInputs, email: e.target.value })
               }
-              placeholder="john@example.com"
+              placeholder="kushchaudharyog@gmail.com"
             />
-            <Input
-              name="password"
-              label="Password"
-              type="password"
-              value={signupInputs.password}
-              onChange={(e) =>
-                setSignupInputs({ ...signupInputs, password: e.target.value })
-              }
-              placeholder="Enter your password"
-            />
-          </div>
-          <div className="mt-6">
-            <Button text="Sign Up" onClick={handleSubmit} />
-          </div>
+            <div className="h-full w-full relative">
+              <Input
+                name="password"
+                label="Password"
+                type={showPassword ? "text" : "password"}
+                value={signupInputs.password}
+                onChange={(e) =>
+                  setSignupInputs({
+                    ...signupInputs,
+                    password: e.target.value,
+                  })
+                }
+                placeholder="Kush@123"
+              />
+              <div className="absolute z-[99999999] top-10 right-2">
+                {showPassword ? (
+                  <button type="button" onClick={handleShowPassword}>
+                    {<EyeOff color="black" />}
+                  </button>
+                ) : (
+                  <button type="button" onClick={handleShowPassword}>
+                    {<Eye color="black" />}
+                  </button>
+                )}
+              </div>
+            </div>
+            <div className="mt-6">
+              <Button type="submit" text="Sign Up" />
+            </div>
+          </form>
           <AuthBottom
-            title="Already have an Account? "
+            title="Have an Account?"
             to="/signin"
-            label="Sign In"
+            label="Login Here!"
           />
         </motion.div>
-      )}
+        <BackgroundPanel />
+      </div>
     </div>
   );
 };

@@ -3,11 +3,13 @@ import { withAccelerate } from "@prisma/extension-accelerate";
 import { Hono } from "hono";
 import { verify } from "hono/jwt";
 import { createBlogInput, updateBlogInput } from '@hanuchaudhary/medium-app'
+import { GoogleGenerativeAI } from '@google/generative-ai'
 
 export const blogRouter = new Hono<{
     Bindings: {
         DATABASE_URL: string,
         JWT_SECRET: string,
+        GOOGLE_API_KEY: string,
     },
     Variables: {
         userId: string,
@@ -221,6 +223,37 @@ blogRouter.delete("/delete", async (c) => {
         c.status(400);
         return c.json({
             message: "Error while deleting Blog!!",
+            error: error
+        });
+    }
+});
+
+
+blogRouter.post("/generate-content", async (c) => {
+    const genAI = new GoogleGenerativeAI(c.env.GOOGLE_API_KEY);
+
+    const body = await c.req.json();
+    const prompt = body.prompt;
+
+    try {
+        const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro" });
+        const result = await model.generateContent(prompt);
+        const response = result.response;
+        const text = response.text();
+        console.log(response);
+
+        console.log(text);
+
+
+        c.status(200);
+        return c.json({
+            message: "Content generated successfully!!",
+            content: text
+        });
+    } catch (error) {
+        c.status(400);
+        return c.json({
+            message: "Error while generating content!!",
             error: error
         });
     }

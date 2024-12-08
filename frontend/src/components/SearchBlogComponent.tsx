@@ -8,7 +8,7 @@ interface searchDataInterface {
 const SearchBlogComponent = ({ title, name, to }: searchDataInterface) => {
   return (
     <div>
-      <Link to={to} className="flex items-center bg-neutral-100 dark:bg-neutral-800 rounded-lg justify-between px-5 py-3 hover:bg-green-50 dark:hover:bg-neutral-900 transition-colors">
+      <Link to={to} className="flex items-center shadow-md bg-neutral-100 dark:bg-neutral-700 rounded-lg justify-between px-5 py-3 hover:bg-green-50 dark:hover:bg-neutral-900 transition-colors">
       <h1 className="text-xs md:text-lg dark:text-neutral-100  text-green-950 font-semibold">{title}</h1>
       <div className="">
         <div className="flex items-center text-start gap-2">

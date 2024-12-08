@@ -1,19 +1,24 @@
 import { motion } from "framer-motion";
+import BackgroundPanel from "./BackgroundPanel";
 interface ButtonProps {
   text: string;
+  type?: "button" | "submit" | "reset";
   onClick?: () => void;
 }
 
-const Button = ({ text, onClick }: ButtonProps) => {
+const Button = ({ text, onClick, type }: ButtonProps) => {
   return (
-    <motion.button
-      whileTap={{scale : 0.95}}
-      whileHover={{scale : 1.05}}
-      onClick={onClick}
-      className="w-full bg-green-500 text-green-950 font-semibold py-2  hover:bg-green-400 focus:scale-110 border-2 border-green-700 focus:outline-none focus:ring-2 px-4 focus:ring-green-900 focus:ring-opacity-50"
-    >
-      {text}
-    </motion.button>
+    <div className="relative">
+      <motion.button
+        type={type}
+        whileTap={{ translateX: 4, translateY: 4 }}
+        onClick={onClick}
+        className="w-full relative z-[99999] rounded-lg bg-customPink border-2 border-black text-black font-semibold py-2"
+      >
+        {text}
+      </motion.button>
+      <BackgroundPanel />
+    </div>
   );
 };
 

@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { CircleX, MoonIcon, Search, SunIcon } from "lucide-react";
+import { CircleX, MoonIcon, Search, SunIcon, XCircle } from "lucide-react";
 import { useProfile } from "../Hooks/Bulk";
 import SearchBlogComponent from "./SearchBlogComponent";
 import axios from "axios";
@@ -88,7 +88,7 @@ const Navbar = ({ onPublish }: NavbarProps) => {
   return (
     <div className="relative font-mono">
       {searchBackground && searchQuery.trim() !== "" && (
-        <div className="absolute inset-x-0 top-full bg-black bg-opacity-50 rounded-b-xl">
+        <div className="fixed inset-x-0 top-16 md:max-w-6xl mx-2 md:mx-auto bg-neutral-300/50 dark:bg-neutral-700/50 dark:backdrop-blur-md backdrop-blur-md rounded-b-xl">
           <div className="flex flex-col gap-1 my-4 mx-4 md:mx-10 rounded-lg shadow-xl">
             {blog.length > 0 ? (
               blog.map((e) => (
@@ -146,8 +146,14 @@ const Navbar = ({ onPublish }: NavbarProps) => {
               onClick={() => setSearchBackground(true)}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search"
-              className="w-full py-2 px-4 bg-neutral-200 dark:bg-neutral-900 text-neutral-800 dark:text-neutral-200 rounded-full focus:outline-none focus:ring-2 focus:ring-green-500 dark:focus:ring-green-400 transition-all duration-200"
+              className="w-full py-2 px-4 bg-neutral-100 shadow-sm dark:bg-neutral-900 text-neutral-800 dark:text-neutral-200 rounded-full focus:outline-none focus:ring-2 focus:ring-green-500 dark:focus:ring-green-400 transition-all duration-200"
             />
+            <div className="absolute top-2 right-2">
+              <XCircle
+                onClick={() => setSearchQuery("")}
+                className="text-neutral-500 cursor-pointer"
+              />
+            </div>
           </div>
         )}
 
@@ -167,7 +173,10 @@ const Navbar = ({ onPublish }: NavbarProps) => {
               className="p-2 rounded-full hover:bg-neutral-200 dark:hover:bg-neutral-700 transition-colors duration-200"
             >
               {search ? (
-                <CircleX className="w-5 h-5 text-neutral-600 dark:text-neutral-300" />
+                <CircleX
+                  onClick={() => setSearchQuery("")}
+                  className="w-5 h-5 text-neutral-600 dark:text-neutral-300 cursor-pointer"
+                />
               ) : (
                 <Search className="w-5 h-5 text-neutral-600 dark:text-neutral-300" />
               )}
@@ -177,13 +186,13 @@ const Navbar = ({ onPublish }: NavbarProps) => {
           {path === "/publish" ? (
             <div className="flex items-center space-x-2 md:space-x-4">
               <Link to="/blogs">
-                <button className="py-1 px-3 md:py-2 md:px-4 bg-red-500 hover:bg-red-600 text-white font-semibold rounded-full transition-colors duration-200">
+                <button className="py-1 px-3 md:py-2 md:px-4 bg-red-500 hover:bg-red-600 text-red-950 font-semibold rounded-full transition-colors duration-200">
                   Discard
                 </button>
               </Link>
               <button
                 onClick={onPublish}
-                className="py-1 px-3 md:py-2 md:px-4 bg-green-500 hover:bg-green-600 text-white font-semibold rounded-full transition-colors duration-200"
+                className="py-1 px-3 md:py-2 md:px-4 bg-green-500 hover:bg-green-600 text-green-950 font-semibold rounded-full transition-colors duration-200"
               >
                 Publish
               </button>
@@ -208,7 +217,7 @@ const Navbar = ({ onPublish }: NavbarProps) => {
             {theme === "dark" ? (
               <SunIcon className="w-5 h-5 text-neutral-600 dark:text-neutral-300" />
             ) : (
-            <MoonIcon className="w-5 h-5 text-neutral-600 dark:text-neutral-300" />
+              <MoonIcon className="w-5 h-5 text-neutral-600 dark:text-neutral-300" />
             )}
           </button>
 

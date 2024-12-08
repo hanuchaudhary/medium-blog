@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { useTheme } from "../provider/ThemeProvider";
 import { MoonIcon, SunIcon } from "lucide-react";
 import { Link } from "react-router-dom";
+import BackgroundPanel from "../components/BackgroundPanel";
 
 export default function LandingPage() {
   const { theme, toggleTheme } = useTheme();
@@ -15,7 +16,7 @@ export default function LandingPage() {
 
   return (
     <div
-      className="min-h-screen flex flex-col bg-cover bg-center transition-all duration-300 bg-white dark:bg-black bg-opacity-80 dark:bg-opacity-80 text-black dark:text-white"
+      className="min-h-screen flex flex-col bg-cover bg-center transition-all duration-300 bg-customLightOrange dark:bg-black bg-opacity-80 dark:bg-opacity-80 text-black dark:text-white"
       style={{
         backgroundImage:
           "url('https://miro.medium.com/v2/format:webp/4*SdjkdS98aKH76I8eD0_qjw.png')",
@@ -29,7 +30,7 @@ export default function LandingPage() {
             transition={{ duration: 0.5 }}
             className="text-3xl font-bold"
           >
-            Medium
+            Medium.
           </motion.h1>
           <div className="flex items-center space-x-8">
             <ul className="hidden md:flex space-x-6">
@@ -42,7 +43,9 @@ export default function LandingPage() {
                   className="cursor-pointer hover:underline"
                 >
                   {item.link ? (
-                    <Link className="text-green-500" to={item.link}>{item.name}</Link>
+                    <Link className="text-green-500" to={item.link}>
+                      {item.name}
+                    </Link>
                   ) : (
                     item.name
                   )}
@@ -82,16 +85,19 @@ export default function LandingPage() {
           Discover stories, thinking, and expertise from writers on any topic.
         </motion.p>
         <Link to={"/signup"}>
-          <motion.button
-            className="px-6 py-3 text-lg rounded-full bg-black dark:bg-white text-white dark:text-black hover:opacity-90 transition-opacity duration-300"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.9 }}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            Start reading
-          </motion.button>
+          <div className="relative">
+            <motion.button
+              className="px-4 py-2 text-xl font-semibold rounded-md relative z-[9999] bg-white text-black border-2 border-black hover:opacity-90 transition-opacity duration-300"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.9 }}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ translateX: 2, targetY: 2 }}
+            >
+              Start reading
+            </motion.button>
+            <BackgroundPanel />
+          </div>
         </Link>
       </main>
     </div>
